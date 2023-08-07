@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { deleteUser, updateUser } from '../redux/reducers'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 
 const EditUsers = () => {
@@ -22,7 +22,23 @@ const EditUsers = () => {
     //     }
     // }
 
-    const [newName, setNewName] = useState('')
+
+    useEffect(() => {
+        userList?.map((user) => {
+            let initialname = user.name
+            console.log(initialname);
+        })
+    }, [])
+
+
+    const [person,setPerson] = useState({
+        name: '',
+        number: '',
+        email: '',
+    })
+
+
+    const [newName,  setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [newEmail, setNewEmail] = useState('')
     const [newAge, setNewAge] = useState('')
@@ -39,6 +55,39 @@ const EditUsers = () => {
                     <h1 className='text-center'> Edit User Details</h1>
                     <div className='row align-items-center'>
                         {userList?.map((user, i) => {
+
+                            const DeleteUser = () => {
+                                dispatch(deleteUser({ id: user.id }))
+                            }
+
+                            const UpdateNewUser = () => {
+                                // if (newName.length == 0) {
+                                //     alert('enter your name')
+                                // }
+                                // else if (newNumber.length == 0) {
+                                //     alert('enter your number')
+                                // }
+                                // else if (newEmail.length == 0) {
+                                //     alert('enter your email')
+                                // }
+                                // else if (newDob.length == 0) {
+                                //     alert('enter your dob')
+                                // }
+                                // else if (newAge.length == 0) {
+                                //     alert('enter your age')
+                                // }
+                                // else if (newGender.length == 0) {
+                                //     alert('enter your gender')
+                                // }
+                                // else if (newImage.length == 0) {
+                                //     alert('Upload New Image')
+                                // }
+
+
+                                dispatch(updateUser({ id: user.id, name: newName, number: newNumber, email: newEmail, dob: newDob, age: newAge, gender: newGender, image: newImage }))
+
+                            }
+
                             return (
                                 <div className='col-md-5 py-5' key={i}>
                                     <div className="edit-users-card-container text-start">
@@ -128,8 +177,8 @@ const EditUsers = () => {
                                         </div>
 
                                         <div className="user-edit-btn">
-                                            <button onClick={() => { dispatch(deleteUser({ id: user.id })) }}>Delete UserName</button>
-                                            <button onClick={() => { dispatch(updateUser({ id: user.id, name: newName, number: newNumber, email: newEmail, dob: newDob, age: newAge, gender: newGender, image: newImage })) }} className='mx-4'>Update UserName</button>
+                                            <button onClick={DeleteUser}>Delete UserName</button>
+                                            <button onClick={UpdateNewUser} className='mx-4'>Update UserName</button>
                                         </div>
                                     </div>
                                 </div>
