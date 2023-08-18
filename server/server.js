@@ -1,37 +1,24 @@
 const express = require('express')
-const mongoose = require('mongoose')
 const app = express()
-const port = 3001
+require('dotenv').config();
+
+const path = require('path');
+require('./models/db');
+
+const sampledata = require('./routes/sampleData')
 
 
-const dbUri = 'mongodb+srv://nasarlalu:Welcome@001@crudcluster.stcqkyv.mongodb.net/?retryWrites=true&w=majority'
-async function connectDb() {
-    try {
-        await mongoose.connect(dbUri)
-        console.log('connnected to database ');
-    }
-    catch (err) {
-        console.log(err, 'error connecting to database')
-    }
-}
-connectDb()
+const PORT = process.env.PORT || 3001;
 
 
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
 })
 
 app.get('/', (req, res) => {
     res.send('Root server')
 })
 
-app.get('/api/users', (req, res) => {
 
-    const users = [
-        { id: 1, name: 'John' },
-        { id: 2, name: 'Doe' }
-    ]
-
-    res.json(users)
-})
+app.use('/api/sampledata', sampledata)
+app.use('/api/students', require('./routes/user'));
