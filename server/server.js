@@ -1,14 +1,16 @@
 const express = require('express')
+const bodyParser = require("body-parser");
+const cors = require('cors')
 const app = express()
-require('dotenv').config();
-
-const path = require('path');
-require('./models/db');
+const PORT = process.env.PORT || 3001;
 
 const sampledata = require('./routes/sampleData')
+const studentsData = require('./routes/user-old')
+const userRoutes = require('./routes/user')
 
 
-const PORT = process.env.PORT || 3001;
+require('dotenv').config();
+require('./models/db');
 
 
 app.listen(PORT, () => {
@@ -21,4 +23,5 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/sampledata', sampledata)
-app.use('/api/students', require('./routes/user'));
+app.use('/api/students', studentsData);
+app.use('/api/users', userRoutes);

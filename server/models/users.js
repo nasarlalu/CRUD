@@ -13,6 +13,14 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    age: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 3
+    }
 });
 
-module.exports = mongoose.model('students', userSchema);
+const user = mongoose.model('User', userSchema)
+
+module.exports = user;

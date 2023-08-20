@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { addUser } from '../redux/reducers'
+import axios from 'axios';
 
 
 const SignUp = () => {
@@ -84,6 +85,24 @@ const SignUp = () => {
             setImage(URL.createObjectURL(e.target.files[0]));
         }
     }
+
+
+    const [data, setData] = useState([])
+    async function fetchData() {
+        try {
+            const response = await axios.get('localhost:3001/api/users');
+            setData(response.data);
+        }
+        catch (err) {
+            console.error(err, 'Error fetching data');
+        }
+    }
+    useEffect(() => {
+        fetchData()
+        console.log(data , 'data');
+    }, [])
+
+
 
     return (
         <section className="userlist-section section-bg section-fit">

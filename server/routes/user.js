@@ -1,69 +1,62 @@
-const express = require('express');
+const express = require('express')
 const router = express.Router();
-const Users = require('../models/users');
-
-// Student model
-
-// @route   GET /api/students/
-// @desc    Get all students
-// @access  Public
-router.get('/', async (req, res) => {
-  try {
-    const students = await Users.find({});
-    res.send({ students })
-  } catch(err) {
-    res.status(400).send({ error: err });
-  }
-});
-
-// @route   GET /api/students/:id
-// @desc    Get a specific student
-// @access  Public
-router.get('/:id', async (req, res) => {
-  try {
-    const student = await Users.findById(req.params.id);
-    res.send({ student });
-  } catch (err) {
-    res.status(404).send({ message: 'Student not found!' });
-  }
-});
-
-// @route   POST /api/students/
-// @desc    Create a student
-// @access  Public
-router.post('/', async (req, res) => {
-  try {
-    const newStudent = await Users.create({ name: req.body.name, email: req.body.email, enrollnumber: req.body.enrollnumber });
-     res.send({ newStudent });
-  } catch(err) {
-    res.status(400).send({ error: err });
-  }
-
-});
-
-// @route   PUT /api/students/:id
-// @desc    Update a student
-// @access  Public
-router.put('/:id', async (req, res) => {
-  try {
-    const updatedStudent = await Users.findByIdAndUpdate(req.params.id, req.body);
-     res.send({ message: 'The student was updated' });
-  } catch(err) {
-    res.status(400).send({ error: err });
-  }
-});
-
-// @route   DELETE /api/students/:id
-// @desc    Delete a student
-// @access  Public
-router.delete('/:id', async (req, res) => {
-  try {
-    const removeStudent = await Users.findByIdAndRemove(req.params.id);
-     res.send({ message: 'The student was removed' });
-  } catch(err) {
-    res.status(400).send({ error: err });
-  }
-});
+const User = require('../models/users')
 
 
-module.exports = router;
+//creating the user
+router.post('/', (req, res) => {
+    const { name, email, age } = req.body  //requesting data from client
+    console.log(req.body, 'bodyDataFromRequest', name, email, age)
+
+    const newUser = new User({ name, email, age }) //creating a new user by the data recieved from client
+
+    newUser.save()
+        .then((user) => {
+            res.json(user)
+        })
+        .catch((error) => {
+            res.status(500).json({ error: 'Error creating user' })
+        })
+})
+
+
+//Read all users
+router.get('/', (req, res) => {
+    User.find()
+        .then((users) => {
+            res.json(users)
+        })
+        .catch((error) => {
+            res.status(500).json({ error: 'Error fetching user' })
+        })
+})
+
+
+//Update a existing user
+router.put('/', (req, res) => {
+    const { id } = req.params
+    const { name, email, age } = req.body
+
+    User.findByIdAndUpdate(id, { name, email, age }, { new: true })
+        .then((user) => {
+            res.json(user)
+        })
+        .catch((error) => {
+            res.status(500).json({ error: 'Error updating user' })
+        })
+})
+
+
+//Delete a user
+router.delete('/', (req, res) => {
+    const { id } = req.params
+    User.findByIdAndRemove(id)
+        .then(() => {
+            res.json({ message: 'User deleted successfully' })
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'Error deleting user' })
+        })
+})
+
+module.exports = router
