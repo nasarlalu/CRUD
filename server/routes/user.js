@@ -4,20 +4,22 @@ const User = require('../models/users')
 
 
 //creating the user
-router.post('/', (req, res) => {
-    const { name, email, age } = req.body  //requesting data from client
-    console.log(req.body, 'bodyDataFromRequest', name, email, age)
+// router.post('/', (req, res) => {
+//     const { name, email, age } = req.body  //requesting data from client
+//     console.log(req.body, 'bodyDataFromRequest', name, email, age)
 
-    const newUser = new User({ name, email, age }) //creating a new user by the data recieved from client
+//     const newUser = new User({ name, email, age }) //creating a new user by the data recieved from client
 
-    newUser.save()
-        .then((user) => {
-            res.json(user)
-        })
-        .catch((error) => {
-            res.status(500).json({ error: 'Error creating user' })
-        })
-})
+//     newUser.save()
+//         .then((user) => {
+//             res.json(user)
+//             console.log('new user created');
+//         })
+//         .catch((error) => {
+//             console.error('Error creating user:', error);
+//             res.status(500).json({ error: 'Error creating user' })
+//         })
+// })
 
 
 //Read all users
@@ -33,7 +35,7 @@ router.get('/', (req, res) => {
 
 
 //Update a existing user
-router.put('/', (req, res) => {
+router.put('/:id', (req, res) => {
     const { id } = req.params
     const { name, email, age } = req.body
 

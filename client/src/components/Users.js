@@ -1,9 +1,26 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const Users = () => {
 
-    const userList = useSelector((state) => state.users.value);
+    // const userList = useSelector((state) => state.users.value);
+
+    const [users, setUsers] = useState([])
+
+    async function fetchUsers() {
+        try {
+            const response = await axios.get('http://localhost:3001/api/users');
+            setUsers(response.data);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers()
+    }, [])
 
     return (
 
@@ -13,7 +30,7 @@ const Users = () => {
                 <div className='container'>
                     <h1 className='text-center'> Users List</h1>
                     <div className='row align-items-center'>
-                        {userList?.map((user, i) => {
+                        {users?.map((user, i) => {
                             return (
                                 <div className='col-md-4 py-5' key={i}>
                                     <Link to='/editusers' className=''>

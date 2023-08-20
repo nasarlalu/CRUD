@@ -6,6 +6,8 @@ import Home from './components/Home'
 import Users from './components/Users'
 import EditUsers from './components/EditUsers'
 import { Route, Routes } from 'react-router-dom'
+import CreateComponent from './crud-components/create'
+import UpdateComponent from './crud-components/update'
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path='account-created' element={<AccountCreated />} />
         <Route path='users' element={<Users />} />
         <Route path='editusers' element={<EditUsers />} />
+        <Route path='create-crud' element={<CreateComponent />} />
+        <Route path='update-crud' element={<UpdateComponent />} />
       </Routes>
 
 
