@@ -4,10 +4,11 @@ const multer = require('multer');
 const path = require('path');
 const User = require('../models/users');
 
+
 // Configure multer storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/crud'); // Specify the directory where the files will be saved
+        cb(null, 'uploads/'); // Specify the directory where the files will be saved
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname));

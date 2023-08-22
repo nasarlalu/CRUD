@@ -43,6 +43,7 @@ const UpdateComponent = () => {
 
     useEffect(() => {
         if (selectedUserId) {
+            
             // Find the selected user's data by their ID
             const selectedUser = users.find(user => user._id === selectedUserId);
             setSelectedUserData(selectedUser);

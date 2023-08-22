@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
 const PORT = process.env.PORT || 3001;
+const path = require('path');
 
 const sampledata = require('./routes/sampleData');
 const studentsData = require('./routes/user-old');
@@ -31,3 +32,5 @@ app.use('/api/sampledata', sampledata);
 app.use('/api/students', studentsData);
 app.use('/api/users', userRoutes);
 app.use('/api/signup', signupRoutes)
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

@@ -13,6 +13,7 @@ const Users = () => {
         try {
             const response = await axios.get('http://localhost:3001/api/users');
             setUsers(response.data);
+            console.log(response, 'users');
         } catch (error) {
             console.error('Error fetching users:', error);
         }
@@ -36,7 +37,7 @@ const Users = () => {
                                     <Link to='/editusers' className=''>
                                         <div className="users-card-container text-start">
                                             <div className="user-img-container">
-                                                <img className='users-img' height="150" width="150" src={user.image} alt="User Image" />
+                                                <img className='users-img' height="150" width="150" src={`http://localhost:3001/${user.image}`} alt="User Image" />
                                             </div>
                                             <div className="user-text-container">
                                                 <span className='mx-2'>Name:</span><p className='m-0'>{user.name}</p>
