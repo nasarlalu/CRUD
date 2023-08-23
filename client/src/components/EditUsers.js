@@ -54,34 +54,25 @@ const EditUsers = () => {
         }
     };
 
-    const handleUpdateUser = async () => {
+    const handleUpdateUser = async (userId) => {
+
         try {
-            const updatedUserData = {
-                name: newName || selectedUserData.name,
-                phoneNumber: newNumber || selectedUserData.phoneNumber,
-                age: newAge || selectedUserData.age,
-                email: newEmail || selectedUserData.email,
-                dob: newDob || selectedUserData.dob,
-                gender: newGender || selectedUserData.gender,
-            };
+
+            const formData = new FormData();
+            formData.append('name', newName || 'undefined');
+            formData.append('email', newEmail || 'undefined');
+            formData.append('age', newAge || 'undefined');
+            formData.append('dob', newDob || 'undefined');
+            formData.append('phoneNumber', newNumber || 'undefined');
+            formData.append('gender', newGender || 'undefined');
 
             if (newImage) {
-                // If a new image is selected, append it to the form data
-                const formData = new FormData();
-                formData.append('image', newImage);
-
-                // Send a POST request to the server to upload the new image
-                const imageResponse = await axios.post('http://localhost:3001/uploads', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-
-                updatedUserData.image = imageResponse.data.imagePath;
+                formData.append('image', newImage); // Only append if image is not null
+                console.log(newImage, 'Newimage');
             }
 
             // Send a PUT request to update the user data
-            const response = await axios.put(`http://localhost:3001/api/users/${selectedUserId}`, updatedUserData);
+            const response = await axios.put(`http://localhost:3001/api/users/${userId}`, formData);
 
             console.log('User updated:', response.data);
             fetchUsers();
@@ -92,14 +83,14 @@ const EditUsers = () => {
 
 
 
-    const handleDeleteUser = async () => {
-        if (!selectedUserId) {
+    const handleDeleteUser = async (userId) => {
+        if (!userId) {
             console.log("No user selected for deletion");
             return;
         }
 
         try {
-            const response = await axios.delete(`http://localhost:3001/api/users/${selectedUserId}`);
+            const response = await axios.delete(`http://localhost:3001/api/users/${userId}`);
             console.log('User Deleted:', response.data);
             // Assuming you also want to update the user list after deletion
             fetchUsers();
@@ -124,10 +115,7 @@ const EditUsers = () => {
                     <div className='row align-items-center'>
                         {users?.map((user, i) => {
                             return (
-                                <div className='col-md-5 py-5' key={i} onClick={() => {
-                                    setSelectedUserId(user._id); // Update the selectedUserId when a user is clicked
-                                    setSelectedUserData(user); // Update the selectedUserData as well
-                                }}>
+                                <div className='col-md-5 py-5' key={i}>
                                     <div className="edit-users-card-container text-start">
                                         <div className="edit-user-text-container">
                                             <table className="table table-borderless edit-table">
@@ -208,8 +196,8 @@ const EditUsers = () => {
                                         </div>
 
                                         <div className="user-edit-btn">
-                                            <button onClick={handleDeleteUser}>Delete UserName</button>
-                                            <button onClick={handleUpdateUser} className='mx-4'>Update UserName</button>
+                                            <button onClick={() => handleDeleteUser(user._id)}>Delete UserName</button>
+                                            <button onClick={() => handleUpdateUser(user._id)} className='mx-4'>Update UserName</button>
                                         </div>
                                     </div>
                                 </div>
@@ -231,3 +219,29 @@ const EditUsers = () => {
 }
 
 export default EditUsers;
+
+
+            // const updatedUserData = {
+            //     name: newName || selectedUserData.name,
+            //     phoneNumber: newNumber || selectedUserData.phoneNumber,
+            //     age: newAge || selectedUserData.age,
+            //     email: newEmail || selectedUserData.email,
+            //     dob: newDob || selectedUserData.dob,
+            //     gender: newGender || selectedUserData.gender,
+            //     image: undefined || selectedUserData.image
+            // };
+
+            // if (newImage) {
+            //     formData.append('image', newImage);
+
+            //     // Send a POST request to the server to upload the new image
+            //     const imageResponse = await axios.post('http://localhost:3001/uploads', formData, {
+            //         headers: {
+            //             'Content-Type': 'multipart/form-data',
+            //         },
+            //     });
+
+            //     console.log(imageResponse.data.imagePath, imageResponse.data, 'newImagePath');
+
+            //     updatedUserData.image = imageResponse.data.imagePath;
+            // }

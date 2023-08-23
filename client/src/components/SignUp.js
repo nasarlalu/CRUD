@@ -48,7 +48,7 @@ const SignUp = () => {
     //adding inputted value to the state
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log(name, phoneNumber, email, dob, age, gender, image);
+        // console.log(name, phoneNumber, email, dob, age, gender, image);
 
         const newErrors = validateInputs();
         if (Object.keys(newErrors).length > 0) {

@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
             res.json(users)
         })
         .catch((error) => {
-            res.status(500).json({ error: 'Error fetching user' })
+            res.status(500).json({ error: 'Error fetching user in server' })
         })
 })
 
@@ -48,21 +48,29 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-//Update a existing user
-router.put('/:id', upload.single('image'), (req, res) => {
-    const { id } = req.params
-    const { name, email, age, dob, phoneNumber, gender, } = req.body
+// Update an existing user
+router.put('/:id', upload.single('image'), async (req, res) => {
+    const { id } = req.params;
+    const { name, email, age, dob, phoneNumber, gender } = req.body;
     const image = req.file ? req.file.path : null; // Get the image path from multer
 
+    try {
+        const updatedUser = await User.findByIdAndUpdate(id,
+            { name, email, age, dob, phoneNumber, gender, image },
+            { new: true }
+        );
 
-    User.findByIdAndUpdate(id, { name, email, age, dob, phoneNumber, gender, image }, { new: true })
-        .then((user) => {
-            res.json(user)
-        })
-        .catch((error) => {
-            res.status(500).json({ error: 'Error updating user' })
-        })
-})
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Respond with a success message and the updated user
+        res.json({ message: 'User updated successfully', user: updatedUser });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Error updating user in server' });
+    }
+});
 
 
 //Delete a user
