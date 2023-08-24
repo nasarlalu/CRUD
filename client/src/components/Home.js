@@ -1,21 +1,23 @@
 import { Link } from 'react-router-dom'
+import { Container, Row, Col } from 'react-bootstrap'
 
 const Home = () => {
     return (
-        <section className='section-bg section-fit d-flex align-items-center'>
-            <div className="container">
-                <div className="row align-items-center text-center">
-                    <div className='col-md-12 col-lg-12 col-xs-12'>
-                        <div className="py-5">
-                            <h1 className='app-title'>CRUD</h1>
-
-                            <nav className='home-links-container'>
-                                <Link className='home-links' to='/signup'>Sign Up</Link> <a>or</a>
-                                <Link className='home-links' to='/login'>Admin Log In</Link>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
+        <section className='RootPage'>
+            <div className='curvedContainer purpleBg section-fit d-flex align-items-center'>
+                <Container>
+                    <Row className="align-items-center text-center">
+                        <Col md={12}>
+                            <div className="py-5">
+                                <h1 className='app-title'>CRUD</h1>
+                                <nav className='home-links-container'>
+                                    <Link className='home-links' to='/signup'>Sign Up</Link> <span>or</span>
+                                    <Link className='home-links' to='/login'>Log In</Link>
+                                </nav>
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
             </div>
         </section>
     );

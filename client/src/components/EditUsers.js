@@ -54,22 +54,18 @@ const EditUsers = () => {
         }
     };
 
-    const handleUpdateUser = async (userId) => {
-
+    const handleUpdateUser = async (userId, currentUserData) => {
         try {
 
             const formData = new FormData();
-            formData.append('name', newName || 'undefined');
-            formData.append('email', newEmail || 'undefined');
-            formData.append('age', newAge || 'undefined');
-            formData.append('dob', newDob || 'undefined');
-            formData.append('phoneNumber', newNumber || 'undefined');
-            formData.append('gender', newGender || 'undefined');
-
-            if (newImage) {
-                formData.append('image', newImage); // Only append if image is not null
-                console.log(newImage, 'Newimage');
-            }
+            formData.append('name', newName || currentUserData.name);
+            formData.append('email', newEmail || currentUserData.email);
+            formData.append('age', newAge || currentUserData.age);
+            formData.append('dob', newDob || currentUserData.dob);
+            formData.append('phoneNumber', newNumber || currentUserData.phoneNumber);
+            formData.append('gender', newGender || currentUserData.gender);
+            formData.append('image', newImage || currentUserData.image);
+        
 
             // Send a PUT request to update the user data
             const response = await axios.put(`http://localhost:3001/api/users/${userId}`, formData);
@@ -129,7 +125,7 @@ const EditUsers = () => {
 
                                                     <tr>
                                                         <th scope="row">User Id:</th>
-                                                        <td>{user._id}</td>
+                                                        <td>****</td>
                                                     </tr>
 
                                                     <tr>
@@ -197,7 +193,7 @@ const EditUsers = () => {
 
                                         <div className="user-edit-btn">
                                             <button onClick={() => handleDeleteUser(user._id)}>Delete UserName</button>
-                                            <button onClick={() => handleUpdateUser(user._id)} className='mx-4'>Update UserName</button>
+                                            <button onClick={() => handleUpdateUser(user._id, user)} className='mx-4'>Update UserName</button>
                                         </div>
                                     </div>
                                 </div>

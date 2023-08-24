@@ -41,7 +41,7 @@ a {
   text-decoration: none !important;
 }
 
-.section-bg {
+.purpleBg {
   background: hsla(228, 17%, 53%, 1);
   background: linear-gradient(90deg, hsla(228, 17%, 53%, 1) 0%, hsla(229, 28%, 88%, 1) 100%);
   background: -moz-linear-gradient(90deg, hsla(228, 17%, 53%, 1) 0%, hsla(229, 28%, 88%, 1) 100%);
@@ -50,8 +50,7 @@ a {
 }
 
 .section-fit {
-  height: 100vh;
-  overflow: hidden;
+  height: calc(100vh - 6rem);
 }
 
 .app-title {
@@ -65,15 +64,18 @@ a {
 .home-links {
   margin: 10px 20px;
   color: #211f2f;
-  font-size: 18px;
+  font-size: 14px;
   transition: all ease-in .3s;
   padding: 6px 16px;
-  border-radius: 5px;
+  border-radius: 1rem;
   box-shadow: -8px -8px 15px rgb(159 165 190), 10px 10px 10px rgb(0 0 0 / 13%), inset 8px 8px 15px #888fac, inset 10px 10px 10px #8c93af;
+  text-transform: uppercase;
 }
 
 .home-links-container a:hover {
   color: #888fac;
+  background-color: #211f2f;
+  box-shadow: unset;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -102,7 +104,7 @@ li {
 } */
 
 .segment-control {
-  width: 221px;
+  width: fit-content;
   padding: 4px 6px;
   border-radius: 10px;
   /* box-shadow: -8px -8px 15px rgb(187 156 217), 10px 10px 10px rgb(0 0 0 / 13%), inset 8px 8px 15px #a08bb6, inset 10px 10px 10px #aad; */
@@ -368,4 +370,25 @@ input[type="file"]::file-selector-button {
   border-right-width: 1px;
   border-right-color: #222;
   border-right-style: solid;
+}
+
+.curvedContainer {
+  border-radius: 1rem;
+}
+
+.RootPage,
+.signUpPage {
+  padding: 3rem;
+  background-color: #5c6178;
+}
+
+.file-input {
+  cursor: pointer;
+}
+
+.error {
+  display: inline-block;
+  color: #8d2306;
+  font-size: 12px;
+  padding: 0 20px;
 }

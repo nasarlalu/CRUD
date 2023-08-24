@@ -25,7 +25,7 @@ const Login = () => {
 
     return (
         <>
-            <section className='section-bg section-fit d-flex align-items-center'>
+            <section className='purpleBg section-fit d-flex align-items-center'>
                 <div className="container">
                     <h1 className='text-center m-0'>Log In</h1>
                     <div className="row align-items-center justify-content-evenly">

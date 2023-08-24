@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 const AccountCreated = () => {
     return (
         <>
-            <section className='section-bg section-fit d-flex align-items-center account-created-section'>
+            <section className='purpleBg section-fit d-flex align-items-center account-created-section'>
                 <div className="container">
                     <div className="row text-center">
 

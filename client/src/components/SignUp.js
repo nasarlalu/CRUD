@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom'
 import axios from 'axios';
 import validator from 'validator';
 import { useDropzone } from 'react-dropzone';
+import { Container, Row, Col } from 'react-bootstrap'
+
 
 
 
@@ -50,13 +52,14 @@ const SignUp = () => {
         e.preventDefault();
         // console.log(name, phoneNumber, email, dob, age, gender, image);
 
-        const newErrors = validateInputs();
+        const newErrors = validateInputs()
+
         if (Object.keys(newErrors).length > 0) {
-            console.error(Object.keys, 'objKeys');
             setErrors(newErrors);
-            console.error(errors, ' validation error');
+            console.error(newErrors, 'validation errors');
             return;
         }
+        setErrors({});
 
         try {
             const formData = new FormData();
@@ -86,10 +89,8 @@ const SignUp = () => {
 
 
     const handleAge = (e) => {
-
         let inputAge = e.target.value;
         setDob(inputAge)
-
         //age-calculation
         let dob = new Date(inputAge);
         let today = new Date();
@@ -102,16 +103,9 @@ const SignUp = () => {
             let newAge = age
             setAge(newAge)
         }
-
     }
 
-    // const handleImageChange = (e) => {
-    //     if (e.target.files && e.target.files[0]) {
-    //         setImage(URL.createObjectURL(e.target.files[0]));
-    //     }
-    // }
-
-    const validateInputs = () => {
+    function validateInputs() {
         const newErrors = {};
         const validGenders = ['male', 'female', 'other'];
 
@@ -120,23 +114,23 @@ const SignUp = () => {
         }
 
         if (!validator.isEmail(email)) {
-            newErrors.email = 'Invalid email format';
+            newErrors.email = 'Invalid email format or undefined';
         }
 
         if (!validator.isInt(age.toString(), { min: 1 })) {
-            newErrors.age = 'Age is undefined';
+            newErrors.age = 'Age is invalid or undefined';
         }
 
         if (!validator.isDate(dob)) {
-            newErrors.dob = 'Dob is incorrect';
+            newErrors.dob = 'Dob is incorrect or undefined ';
         }
 
         if (!validGenders.includes(gender.toLowerCase())) {
-            newErrors.gender = 'Gender is incorrect';
+            newErrors.gender = 'Gender is not selected';
         }
 
         if (!validator.isMobilePhone(phoneNumber, 'any')) {
-            newErrors.phoneNumber = 'Invalid phone number format';
+            newErrors.phoneNumber = 'Invalid phone number format or Undefined';
         }
 
         return newErrors;
@@ -144,56 +138,49 @@ const SignUp = () => {
 
 
     useEffect(() => {
-        // create()
-    }, [])
+        console.log(errors, 'validation errors');
+    }, [errors])
 
 
 
     return (
-        <section className="userlist-section section-bg section-fit">
-
-            < div className="container">
-
-                <div className="row align-items-center pt-4">
-
-                    <h1 className='text-center'> Sign Up</h1>
-                    <div className='row'>
-
-                        <form onSubmit={handleSubmit} className='d-flex'>
-                            <div className="col-md-4 py-5">
-
-                                <div className=''>
-                                    <div className="mb-3">
-                                        <label className="form-label label-text">Name</label>
-                                        <input type="text" className="form-control" id="name" value={name} onChange={(e) => { setName(e.target.value) }} placeholder="enter your name" required />
-                                        {errors.name && <span className="error">{errors.name}</span>}
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label className="form-label label-text">Phone Number</label>
-                                        <input type="number" className="form-control" id="number" value={phoneNumber} onChange={(e) => { setPhoneNumber(e.target.value) }} placeholder="enter your phone number" required />
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label className="form-label label-text">Email address</label>
-                                        <input type="email" className="form-control" id="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="enter your mail" required />
-                                        {errors.email && <span className="error">{errors.email}</span>}
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label className="form-label label-text">Date Of Birth</label>
-                                        <input type="date" className="form-control" id="dob" value={dob} onChange={handleAge} placeholder="enter your dob" required />
-                                        {errors.dob && <span className="error">{errors.dob}</span>}
-                                    </div>
+        <section className="signUpPage">
+            <div className='curvedContainer purpleBg section-fit d-flex align-items-center'>
+                <Container>
+                    <Row className='align-items-center'>
+                        <form onSubmit={handleSubmit} className='d-flex justify-content-equally'>
+                            <Col md={4} className="mx-2">
+                                <div className="mb-3">
+                                    <label className="form-label label-text">Name</label>
+                                    <input type="text" className="form-control" id="name" value={name} onChange={(e) => { setName(e.target.value) }} placeholder="enter your name" />
+                                    {errors.name && <span className="error">{errors.name}</span>}
                                 </div>
 
-                            </div>
+                                <div className="mb-3">
+                                    <label className="form-label label-text">Phone Number</label>
+                                    <input type="number" className="form-control" id="number" value={phoneNumber} onChange={(e) => { setPhoneNumber(e.target.value) }} placeholder="enter your phone number" />
+                                    {errors.phoneNumber && <span className="error">{errors.phoneNumber}</span>}
+                                </div>
 
-                            <div className='col-md-4 py-5'>
+                                <div className="mb-3">
+                                    <label className="form-label label-text">Email address</label>
+                                    <input type="email" className="form-control" id="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="enter your mail" />
+                                    {errors.email && <span className="error">{errors.email}</span>}
+                                </div>
+                            </Col>
+
+                            <Col md={4} className="mx-2">
+
+                                <div className="mb-3">
+                                    <label className="form-label label-text">Date Of Birth</label>
+                                    <input type="date" className="form-control" id="dob" value={dob} onChange={handleAge} placeholder="enter your dob" />
+                                    {errors.dob && <span className="error">{errors.dob}</span>}
+                                </div>
 
                                 <div className="mb-3">
                                     <label className="form-label label-text">Age</label>
                                     <input type="text" className="form-control" value={age} placeholder="Age calculated automatically" disabled />
+                                    {errors.dob && <span className="error">{errors.dob}</span>}
                                 </div>
 
                                 <div className="mb-3">
@@ -214,46 +201,33 @@ const SignUp = () => {
 
                                 </div>
 
+                            </Col>
+
+                            <Col md={4} className='mx-2'>
+
                                 <div className="mb-3">
                                     <label className="form-label label-text">Upload Your Image</label>
-                                    {/* <input type="file" className="form-control" id="image" accept="image/*" onChange={handleImageChange} placeholder="upload your image" /> */}
-
-                                    {/* <div className="file-input">
-                                        <input type="file" name="file-input" id="file-input" className="file-input__input" accept="image/*" onChange={handleImageChange} required />
-                                        <label className="file-input__label" htmlFor="file-input">
-                                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="upload" className="svg-inline--fa fa-upload fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
-                                                <path fill="currentColor" d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z" ></path>
-                                            </svg>
-                                        </label>
-                                    </div> */}
-
                                     <div className="file-input" {...getRootProps()}>
                                         <input {...getInputProps()} />
                                         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="upload" className="svg-inline--fa fa-upload fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style={{ width: '20px' }}>
                                             <path fill="currentColor" d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z" ></path>
                                         </svg>
                                     </div>
-
                                 </div>
 
-                                <div className="" style={{ marginTop: "3.5rem" }}>
+                                <div className="">
                                     <button type="submit" className="create-btn btn btn-primary" >Create Account</button>
                                 </div>
-                            </div>
+
+                            </Col>
+
+
                         </form>
-                    </div>
 
-                </div>
+                    </Row>
 
-                <div className='row'>
-                    <div className='col-md-12 text-center'>
-                        <Link to='/' className='go-back-link'>Go Back</Link>
-                    </div>
-                </div >
-
+                </Container>
             </div>
-
-
         </section >
     );
 }

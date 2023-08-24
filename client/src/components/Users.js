@@ -27,7 +27,7 @@ const Users = () => {
 
         <>
 
-            <section className='section-bg py-5'>
+            <section className='purpleBg py-5'>
                 <div className='container'>
                     <h1 className='text-center'> Users List</h1>
                     <div className='row align-items-center'>
