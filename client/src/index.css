@@ -392,3 +392,8 @@ input[type="file"]::file-selector-button {
   font-size: 12px;
   padding: 0 20px;
 }
+.prevImage img{
+  width: 100px;
+  height: 100px;
+  border-radius: 1rem;
+}

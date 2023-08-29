@@ -6,9 +6,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios';
 import validator from 'validator';
 import { useDropzone } from 'react-dropzone';
-import { Container, Row, Col } from 'react-bootstrap'
-
-
+import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
 
 
 const SignUp = () => {
@@ -31,19 +29,32 @@ const SignUp = () => {
     const [gender, setGender] = useState('')
     const [image, setImage] = useState(null)
     const [errors, setErrors] = useState({});
+    const [errorTxt, setErrorTxt] = useState('')
+    const [modalShow, setModalShow] = useState(false);
+    const [prevImage, setPrevImage] = useState(null)
 
 
-
+    const onHide = () => setModalShow(!modalShow);
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: handleImageDrop,
-        accept: 'image/*',
+        // accept: 'image/*',
         multiple: false,
+        accept: {
+            'image/png': ['.png'],
+            'image/jpeg': ['.jpg', '.jpeg']
+        },
     });
 
     function handleImageDrop(acceptedFiles) {
         if (acceptedFiles.length > 0) {
             setImage(acceptedFiles[0]);
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                setPrevImage(reader.result);
+            };
+            reader.readAsDataURL(acceptedFiles[0]);
         }
     };
 
@@ -84,6 +95,8 @@ const SignUp = () => {
             navigate('/account-created')
         } catch (err) {
             console.error(err, 'Error while signup in frontend');
+            setModalShow(true)
+            setErrorTxt(err.response.data.error)
         }
     }
 
@@ -213,6 +226,11 @@ const SignUp = () => {
                                             <path fill="currentColor" d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z" ></path>
                                         </svg>
                                     </div>
+                                    {prevImage && (
+                                        <div className='prevImage'>
+                                            <img src={prevImage} alt="Preview Img" />
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="">
@@ -228,6 +246,27 @@ const SignUp = () => {
 
                 </Container>
             </div>
+
+            <Modal
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                show={modalShow}
+                onHide={onHide}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        {errorTxt}
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <h4>Login Error Try Again Later</h4>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={onHide}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+
         </section >
     );
 }

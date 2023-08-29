@@ -57,6 +57,8 @@ const EditUsers = () => {
     const handleUpdateUser = async (userId, currentUserData) => {
         try {
 
+            console.log(currentUserData, 'currentUserData');
+
             const formData = new FormData();
             formData.append('name', newName || currentUserData.name);
             formData.append('email', newEmail || currentUserData.email);
@@ -65,7 +67,6 @@ const EditUsers = () => {
             formData.append('phoneNumber', newNumber || currentUserData.phoneNumber);
             formData.append('gender', newGender || currentUserData.gender);
             formData.append('image', newImage || currentUserData.image);
-        
 
             // Send a PUT request to update the user data
             const response = await axios.put(`http://localhost:3001/api/users/${userId}`, formData);

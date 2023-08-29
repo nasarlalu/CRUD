@@ -18,9 +18,15 @@ const storage = multer.diskStorage({
 // Create multer instance with the configured storage
 const upload = multer({ storage: storage });
 
-router.post('/', upload.single('image'), (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
     const { name, email, age, dob, phoneNumber, gender } = req.body;
     const image = req.file ? req.file.path : null; // Get the image path from multer
+
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        return res.status(400).json({ error: 'Email already exists' });
+    }
 
     const newUser = new User({
         name,
