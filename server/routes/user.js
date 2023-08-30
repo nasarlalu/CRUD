@@ -52,7 +52,14 @@ const upload = multer({ storage: storage });
 router.put('/:id', upload.single('image'), async (req, res) => {
     const { id } = req.params;
     const { name, email, age, dob, phoneNumber, gender } = req.body;
-    const image = req.file ? req.file.path : null; // Get the image path from multer
+
+    // const image = req.file ? req.file.path : null;
+
+    let image = null;
+    if (req.file) {
+        image = req.file.path;
+    }
+
 
     try {
         const updatedUser = await User.findByIdAndUpdate(id,

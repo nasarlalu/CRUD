@@ -28,9 +28,6 @@ const EditUsers = () => {
     const [newImage, setNewImage] = useState(null)
 
     const [users, setUsers] = useState([])
-    const [selectedUserId, setSelectedUserId] = useState('');
-    const [selectedUserData, setSelectedUserData] = useState([]);
-
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: handleImageDrop,
@@ -39,8 +36,10 @@ const EditUsers = () => {
     });
 
     function handleImageDrop(acceptedFiles) {
+        console.log(acceptedFiles, 'handleImageDrop');
         if (acceptedFiles.length > 0) {
             setNewImage(acceptedFiles[0]);
+            console.log('newImageState', newImage);
         }
     };
 
@@ -49,12 +48,15 @@ const EditUsers = () => {
         try {
             const response = await axios.get('http://localhost:3001/api/users');
             setUsers(response.data);
+            console.log(response.data , 'fetching users data');
         } catch (error) {
             console.error('Error fetching users:', error);
         }
     };
 
     const handleUpdateUser = async (userId, currentUserData) => {
+
+
         try {
 
             console.log(currentUserData, 'currentUserData');
@@ -66,7 +68,15 @@ const EditUsers = () => {
             formData.append('dob', newDob || currentUserData.dob);
             formData.append('phoneNumber', newNumber || currentUserData.phoneNumber);
             formData.append('gender', newGender || currentUserData.gender);
-            formData.append('image', newImage || currentUserData.image);
+            if (newImage) {
+                formData.append('image', newImage);
+            }
+            else {
+                formData.append('image', currentUserData.image);
+                console.log(currentUserData.image, 'currImg');
+            }
+
+            console.log(formData , 'formDataBeforeSendng');
 
             // Send a PUT request to update the user data
             const response = await axios.put(`http://localhost:3001/api/users/${userId}`, formData);
