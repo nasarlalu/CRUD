@@ -10,7 +10,7 @@ import CreateComponent from './crud-components/create'
 import UpdateComponent from './crud-components/update'
 
 function App() {
-  return (
+  return (  
     <>
       <Routes>
         <Route path='/' element={<Home />} />
@@ -18,7 +18,7 @@ function App() {
         <Route path='login' element={<Login />} />
         <Route path='account-created' element={<AccountCreated />} />
         <Route path='users' element={<Users />} />
-        <Route path='editusers' element={<EditUsers />} />
+        <Route path="edituser/:userId" element={<EditUsers />} />
         <Route path='create-crud' element={<CreateComponent />} />
         <Route path='update-crud' element={<UpdateComponent />} />
       </Routes>

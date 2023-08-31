@@ -35,6 +35,24 @@ router.get('/', (req, res) => {
         })
 })
 
+//Get particular user data
+router.get('/:userId', (req, res) => {
+    const userId = req.params.userId;
+
+    User.findById(userId)
+        .then((user) => {
+            if (!user) {
+                res.status(404).json({ error: 'User not found' });
+            } else {
+                res.json(user);
+            }
+        })
+        .catch((error) => {
+            res.status(500).json({ error: 'Error fetching user in server' });
+        });
+});
+
+
 
 
 // Configure multer storage

@@ -32,9 +32,10 @@ const Users = () => {
                     <h1 className='text-center'> Users List</h1>
                     <div className='row align-items-center'>
                         {users?.map((user, i) => {
+                            console.log(user._id, 'userid')
                             return (
                                 <div className='col-md-4 py-5' key={i}>
-                                    <Link to='/editusers' className=''>
+                                    <Link to={`/edituser/${user._id}`} className=''>
                                         <div className="users-card-container text-start">
                                             <div className="user-img-container">
                                                 <img className='users-img' height="150" width="150" src={`http://localhost:3001/${user.image}`} alt="User Image" />

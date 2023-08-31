@@ -15,7 +15,7 @@ const Login = () => {
 
     const handleLogin = () => {
         if (adminMailId == mail && adminPwd == pwd) {
-            navigate('/editusers')
+            navigate('/users')
         }
         else {
             alert('InCorrect Mail Id or Password')
