@@ -4,20 +4,6 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
 
 @keyframes App-logo-spin {
   from {
@@ -27,4 +13,313 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* placeholder text style */
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #aaaaaa;
+}
+
+::placeholder {
+  color: #aaaaaa !important;
+  opacity: 1 !important;
+  font-size: .8rem;
+}
+
+.root-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.tabMenu {
+  background-color: var(--violet);
+  padding: 3rem 0;
+  flex: 0 0 20%;
+
+}
+
+.tabMenu ul {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.tabMenu li {
+  cursor: pointer;
+  padding: 1rem;
+  margin: 1rem 0 1rem 1rem;
+  color: #f1f1f1;
+  display: flex;
+  align-items: center;
+  transition: all 0.6s ease;
+}
+
+.activeTabBg {
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+  background-color: #fff;
+  color: var(--violet) !important;
+}
+
+.tabMenu li svg {
+  margin-right: .8rem;
+}
+
+.tabContent {
+  flex: 1;
+  background-color: #fff;
+}
+
+.userDataInputCntr {
+  border-radius: 1rem;
+  background-color: #d6d9e7;
+  padding: 2rem;
+  margin: 2rem;
+}
+
+.userImgInputCntr {
+  border-radius: 1rem;
+  background-color: #d6d9e7;
+  padding: 2rem;
+  margin: 0 2rem 2rem 2rem;
+}
+
+.userSubmitBtn {
+  margin-right: 2rem;
+}
+
+.userSubmitBtn button {
+  background-color: #3f23a3;
+  border-radius: .3rem;
+  color: #f4f4f4;
+  border: unset;
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.userDataInputCntr {
+  display: flex;
+  align-items: flex-start;
+}
+
+.userDataInputCol1 {
+  flex: 0 0 45%;
+  margin-right: 5rem;
+}
+
+.userDataInputCol2 {
+  flex: 1;
+}
+
+.form-control {
+  border-radius: 3px;
+  box-shadow: none;
+  border: 1px solid #8b92ae;
+  padding: 5px 15px;
+  background-color: #fff;
+  margin-bottom: 1rem;
+  font-size: .9rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.segment-control {
+  width: fit-content;
+  padding: 4px 6px;
+  border-radius: 3px;
+  border: 1px solid #8b92ae;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.segment-btn {
+  position: relative;
+  transition: .4s ease-in-out;
+  z-index: 0;
+  font-size: .8rem;
+}
+
+.segment-control input:checked {
+  background-color: black !important;
+}
+
+.btn-check:checked+.btn {
+  background-color: #aad !important;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: inset -8px -8px 15px rgb(255 255 255 / 60%), inset 10px 10px 10px rgb(0 0 0 / 25%);
+  border-radius: 6px;
+  color: #fff;
+  border-color: transparent !important;
+  z-index: 2;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.btn-check.active:checked+.btn {
+  background-color: #aad !important;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: inset -8px -8px 15px rgb(255 255 255 / 60%), inset 10px 10px 10px rgb(0 0 0 / 25%);
+  border-radius: 6px;
+  color: #fff;
+  border-color: transparent !important;
+  z-index: 2;
+}
+
+.uploadCntr {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: .8rem;
+  position: relative;
+
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.uploadCntr svg {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.uploadCntr p {
+  margin-bottom: 0;
+  font-size: .9rem;
+}
+
+.readCrudSection {
+  /* border-radius: 1rem; */
+  /* background-color: #d6d9e7; */
+  /* padding: 2rem; */
+  margin: 2rem;
+}
+
+.updateCrudSection {
+  margin: 2rem;
+}
+
+.imgBox {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.tableSection table {
+  width: 100%;
+}
+
+.tableSection td {
+  padding: 1rem;
+  border-bottom: unset;
+  padding-left: 1rem;
+}
+
+.tableSection th {
+  padding-left: 1rem;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: .8rem;
+  color: #aaa;
+}
+
+
+.tableSection thead {
+  border-bottom-color: #fff;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tableSection td {
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+}
+
+.tdFirst {
+  border-left: 1px solid #aaa;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.tdLast {
+  border-right: 1px solid #aaa;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 15px;
+}
+
+.editIcon {
+  width: 100%;
+  font-size: 1.5rem;
+  color: #9c8ecf;
+  cursor: pointer;
+}
+
+
+.updateModal .modal-header {
+  background-color: #786aaa;
+  color: #fff;
+}
+
+.updateModal .modal-title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.updateModal .closeBtn {
+  width: 20px;
+  height: 18px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.updateModal .modal-dialog {
+  max-width: 40rem;
+}
+
+.updateModal.DeleteModal .modal-dialog {
+  max-width: 20rem;
+}
+
+.updateModal .modal-footer {
+  padding: .5rem 0;
+}
+
+.updateModal .discardBtn,
+.updateModal .updateBtn {
+  margin: 0 .5rem;
+  padding: 5px 15px;
+  font-size: .8rem;
+  background-color: var(--violet);
+  border: 0;
+}
+
+.updateModal .userDataInputCntr {
+  margin: 0 0 1rem 0;
+}
+
+.updateModal .userImgInputCntr {
+  margin: 0;
+}
+
+.genderErr {
+  right: -10.5rem;
+}
+
+.error.imgErr {
+  bottom: 0;
+  right: 40%;
 }
