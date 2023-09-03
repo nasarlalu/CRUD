@@ -50,11 +50,10 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 .tabMenu li {
   cursor: pointer;
   padding: 1rem;
-  margin: 1rem 0 1rem 1rem;
   color: #f1f1f1;
   display: flex;
   align-items: center;
-  transition: all 0.6s ease;
+  transition: border-radius 0.3s ease;
 }
 
 .activeTabBg {
@@ -62,6 +61,7 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   border-bottom-left-radius: 2rem;
   background-color: #fff;
   color: var(--violet) !important;
+  margin: 0 0 0 1rem !important;
 }
 
 .tabMenu li svg {
@@ -116,7 +116,7 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 }
 
 .form-control {
-  border-radius: 3px;
+  border-radius: 1rem;
   box-shadow: none;
   border: 1px solid #8b92ae;
   padding: 5px 15px;
@@ -131,7 +131,7 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 .segment-control {
   width: fit-content;
   padding: 4px 6px;
-  border-radius: 3px;
+  border-radius: 1rem;
   border: 1px solid #8b92ae;
   height: 2.5rem;
   display: flex;
@@ -151,24 +151,24 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 }
 
 .btn-check:checked+.btn {
-  background-color: #aad !important;
+  background-color: var(--violet) !important;
   color: #fff;
   cursor: pointer;
-  box-shadow: inset -8px -8px 15px rgb(255 255 255 / 60%), inset 10px 10px 10px rgb(0 0 0 / 25%);
-  border-radius: 6px;
+  /* box-shadow: inset -8px -8px 15px rgb(255 255 255 / 60%), inset 10px 10px 10px rgb(0 0 0 / 25%); */
+  border-radius: 1rem;
   color: #fff;
   border-color: transparent !important;
   z-index: 2;
-  padding: 4px 10px;
+  padding: 4px 16px;
   font-size: 12px;
 }
 
 .btn-check.active:checked+.btn {
-  background-color: #aad !important;
+  background-color: var(--violet) !important;
   color: #fff;
   cursor: pointer;
-  box-shadow: inset -8px -8px 15px rgb(255 255 255 / 60%), inset 10px 10px 10px rgb(0 0 0 / 25%);
-  border-radius: 6px;
+  /* box-shadow: inset -8px -8px 15px rgb(255 255 255 / 60%), inset 10px 10px 10px rgb(0 0 0 / 25%); */
+  border-radius: 1rem;
   color: #fff;
   border-color: transparent !important;
   z-index: 2;
@@ -322,4 +322,48 @@ table {
 .error.imgErr {
   bottom: 0;
   right: 40%;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* =================================================================*/
+.create .readTabCntr,
+.read .createTabCntr,
+.read .updateTabCntr,
+.update .readTabCntr,
+.update .deleteTabCntr,
+.delete .updateTabCntr {
+  background-color: #fff;
+  margin-left: 1rem;
+}
+
+.update .readTab,
+.delete .updateTab,
+.read .createTab {
+  border-bottom-right-radius: 2rem;
+  background-color: var(--violet);
+}
+
+.update .deleteTab,
+.create .readTab,
+.read .updateTab {
+  border-top-right-radius: 2rem;
+  background-color: var(--violet);
+}
+
+.create .updateTabCntr,
+.create .deleteTabCntr,
+.read .deleteTabCntr,
+.update .createTabCntr,
+.delete .createTabCntr,
+.delete .readTabCntr {
+  margin-left: 1rem;
 }

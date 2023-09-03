@@ -79,7 +79,17 @@ const CreateComponent = () => {
             });
 
             console.log('User created:', response.data);
-            navigate('/account-created')
+            // navigate('/account-created')
+            alert('User created successfully')
+
+            setName('')
+            setAge('')
+            setDob('')
+            setEmail('')
+            setImage('')
+            setGender('')
+            setPhoneNumber('')
+            setPrevImage('')
         } catch (err) {
             console.error(err, 'Error while signup in frontend');
             setModalShow(true)

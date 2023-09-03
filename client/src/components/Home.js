@@ -13,36 +13,47 @@ import { AiOutlineDelete } from 'react-icons/ai'
 
 const Home = () => {
 
+    const tabs = ['create', 'read', 'update', 'delete'];
     const [selectedTab, setSelectedTab] = useState('create');
 
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
     };
 
+    const getTabClassName = (tabName) => {
+        if (tabName === selectedTab) {
+            return `${tabName}Tab activeTabBg`;
+        } else {
+            return `${tabName}Tab`;
+        }
+    };
+
+    const getTabCntrClassName = (tabName) => {
+        if (tabName === selectedTab) {
+            return `${tabName}TabCntr activeTabBgCntr`;
+        } else {
+            return `${tabName}TabCntr`;
+        }
+    };
 
     return (
         <section className='RootPage'>
             <div className='root-container'>
 
                 <div className='tabMenu'>
-                    <ul>
-                        <div className={selectedTab == 'create' ? 'activeTabCntr' : ''} onClick={() => handleTabClick('create')}>
-                            <li className={selectedTab == 'create' ? 'activeTabBg' : ''}><GoPersonAdd /> Create </li>
-                        </div>
-
-                        <div className={selectedTab == 'read' ? 'activeTabCntr' : ''} onClick={() => handleTabClick('read')}>
-                            <li className={selectedTab == 'read' ? 'activeTabBg' : ''}><SiDarkreader />Read</li>
-                        </div>
-
-                        <div className={selectedTab == 'update' ? 'activeTabCntr' : ''} onClick={() => handleTabClick('update')}>
-                            <li className={selectedTab == 'update' ? 'activeTabBg' : ''}><LiaUserEditSolid />Update</li>
-                        </div>
-
-                        <div className={selectedTab == 'delete' ? 'activeTabCntr' : ''} onClick={() => handleTabClick('delete')}>
-                            <li className={selectedTab == 'delete' ? 'activeTabBg' : ''}><AiOutlineDelete />Delete</li>
-                        </div>
-
-                    </ul >
+                    <ul className={selectedTab}>
+                        {tabs.map(tabName => (
+                            <div key={tabName} className={getTabCntrClassName(tabName)}>
+                                <li className={getTabClassName(tabName)} onClick={() => handleTabClick(tabName)}>
+                                    {tabName === 'create' && <GoPersonAdd />}
+                                    {tabName === 'read' && <SiDarkreader />}
+                                    {tabName === 'update' && <LiaUserEditSolid />}
+                                    {tabName === 'delete' && <AiOutlineDelete />}
+                                    {tabName.charAt(0).toUpperCase() + tabName.slice(1)}
+                                </li>
+                            </div>
+                        ))}
+                    </ul>
                 </div >
 
                 <div className='tabContent'>
