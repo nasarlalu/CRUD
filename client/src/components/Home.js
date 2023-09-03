@@ -56,7 +56,7 @@ const Home = () => {
                     </ul>
                 </div >
 
-                <div className='tabContent'>
+                <div className='tabContent scrollBarHidden'>
                     {selectedTab == 'create' ? <Create /> : ''}
                     {selectedTab == 'read' ? <Read /> : ''}
                     {selectedTab == 'update' ? <Update /> : ''}

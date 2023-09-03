@@ -10,7 +10,8 @@ export default function ReadComponent() {
   const fetchUserList = async () => {
 
     try {
-      const user = await axios.get('http://localhost:3001/api/users')
+
+      const user = await axios.get(process.env.REACT_APP_DEV_API)
       console.log(user.data, 'userdata');
       setUserData(user.data)
     }
@@ -55,7 +56,7 @@ export default function ReadComponent() {
                   return (
                     <tr key={user.email} className='dataTr'>
                       <td className='tdFirst'><img src={`http://localhost:3001/${user.image}`} alt='user image' className='imgBox' /> </td>
-                      <td>{user.name}</td>
+                      <td className='tdSecond'>{user.name}</td>
                       <td>{user.email}</td>
                       <td>{user.phoneNumber}</td>
                       <td>{user.gender}</td>

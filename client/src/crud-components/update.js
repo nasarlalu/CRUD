@@ -7,50 +7,33 @@ import { VscCloudUpload } from 'react-icons/vsc'
 
 
 const UpdateComponent = () => {
-    // const [users, setUsers] = useState([]);
-    // const [name, setName] = useState('');
-    // const [email, setEmail] = useState('');
-    // const [age, setAge] = useState('');
-    // const [selectedUserId, setSelectedUserId] = useState('');
-    // const [selectedUserData, setSelectedUserData] = useState([]);
-    // const [errors, setErrors] = useState({});
 
-    // const handleUpdateUser = async () => {
+    const [newName, setNewName] = useState('')
+    const [newNumber, setNewNumber] = useState('')
+    const [newEmail, setNewEmail] = useState('')
+    const [newAge, setNewAge] = useState('')
+    const [newDob, setNewDob] = useState('')
+    const [newGender, setNewGender] = useState('')
+    const [newImage, setNewImage] = useState(null)
+    const [users, setUsers] = useState([])
+    const [is404Err, set404Err] = useState('')
+    const [isUpdateModal, setIsUpdateModal] = useState([])
 
-    //     try {
-    //         const response = await axios.put(`http://localhost:3001/api/users/${selectedUserId}`, {
-    //             name,
-    //             email,
-    //             age
-    //         });
+    const handleClose = (userId) => {
+        setIsUpdateModal((prev) => {
+            const updatedState = [...prev];
+            updatedState[userId] = false;
+            return updatedState;
+        })
+    }
 
-    //         console.log('User updated:', response.data);
-    //         fetchUsers();
-    //     } catch (error) {
-    //         console.error('Error updating user:', error);
-    //     }
-    // };
-
-
-
-    const [userData, setUserData] = useState([])
-    const [userDob, setUserDob] = useState([])
-    const [isUpdateModal, setIsUpdateModal] = useState(false)
-    const [gender, setGender] = useState('')
-    const [errors, setErrors] = useState({});
-    const [image, setImage] = useState(null)
-
-
-
-    const handleClose = () => setIsUpdateModal(false);
-    const handleShow = () => setIsUpdateModal(true);
 
     const fetchUserList = async () => {
 
         try {
-            const user = await axios.get('http://localhost:3001/api/users')
-            console.log(user.data, 'userdata');
-            setUserData(user.data)
+            const user = await axios.get(process.env.REACT_APP_DEV_API)
+            setUsers(user.data)
+            setIsUpdateModal(new Array(user.data.length).fill(false));
         }
         catch (err) {
             console.error(err, 'error fetching user list');
@@ -58,9 +41,42 @@ const UpdateComponent = () => {
 
     }
 
-    const handleUpdateUser = () => {
-        console.log('handleUpdateUser');
-    }
+    const handleUpdateUser = async (userId, currentUserData) => {
+
+        try {
+
+            const formData = new FormData();
+            formData.append('name', newName || currentUserData.name);
+            formData.append('email', newEmail || currentUserData.email);
+            formData.append('age', newAge || currentUserData.age);
+            formData.append('dob', newDob || currentUserData.dob);
+            formData.append('phoneNumber', newNumber || currentUserData.phoneNumber);
+            formData.append('gender', newGender || currentUserData.gender);
+
+            if (newImage) {
+                formData.append('image', newImage);
+            }
+            else {
+                formData.append('image', currentUserData.image);
+                console.log(currentUserData.image, 'currImg');
+            }
+
+            console.log(formData, 'formDataBeforeSendng');
+
+            // Send a PUT request to update the user data
+            const envApiLink = process.env.REACT_APP_DEV_API
+            const response = await axios.put(`${envApiLink}/${userId}`, formData);
+
+            console.log('User updated:', response.data);
+            fetchUserList();
+            handleClose(userId)
+            alert('updated successfully')
+
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
+    };
+
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: handleImageDrop,
@@ -74,7 +90,7 @@ const UpdateComponent = () => {
 
     function handleImageDrop(acceptedFiles) {
         if (acceptedFiles.length > 0) {
-            setImage(acceptedFiles[0]);
+            setNewImage(acceptedFiles[0]);
 
             const reader = new FileReader();
             reader.onload = () => {
@@ -108,21 +124,134 @@ const UpdateComponent = () => {
                             </thead>
 
                             <tbody>
-                                {userData.length > 0 ? userData.map((user) => {
+                                {users.length > 0 ? users.map((user, index) => {
                                     let dob = user.dob
                                     let newDob = dob.split('T')[0]
                                     return (
-                                        <tr key={user.email} className='dataTr'>
-                                            <td className='tdFirst'><img src={`http://localhost:3001/${user.image}`} alt='user image' className='imgBox' /> </td>
-                                            <td>{user.name}</td>
-                                            <td>{user.email}</td>
-                                            <td>{user.phoneNumber}</td>
-                                            <td>{user.gender}</td>
-                                            <td>{newDob}</td>
-                                            <td className='tdLast'>
-                                                <LiaUserEditSolid className='editIcon' onClick={() => setIsUpdateModal(true)} />
-                                            </td>
-                                        </tr>
+                                        <React.Fragment key={user.email} >
+                                            <tr className='dataTr'>
+                                                <td className='tdFirst'><img src={`http://localhost:3001/${user.image}`} alt='user image' className='imgBox' /> </td>
+                                                <td className='tdSecond'>{user.name}</td>
+                                                <td>{user.email}</td>
+                                                <td>{user.phoneNumber}</td>
+                                                <td>{user.gender}</td>
+                                                <td>{newDob}</td>
+                                                <td className='tdLast'>
+                                                    <LiaUserEditSolid className='editIcon' onClick={() => setIsUpdateModal((prev) => prev.map((value, i) => (i === index ? true : value)))} />
+                                                </td>
+                                            </tr>
+
+                                            <Modal show={isUpdateModal[index]} onHide={() => handleClose(index)} className='updateModal'>
+                                                <Form noValidate>
+
+                                                    <Modal.Header>
+                                                        <Modal.Title></Modal.Title>
+                                                        <img src='/images/closeBtn.png' alt='' className='closeBtn' onClick={() => handleClose(index)} />
+                                                    </Modal.Header>
+
+                                                    <Modal.Body>
+
+                                                        <Row>
+                                                            <Col md={12} lg={12}>
+
+                                                                <div className='userDataInputCntr'>
+                                                                    <div className='userDataInputCol1'>
+                                                                        <Form.Control
+                                                                            type="text"
+                                                                            placeholder={user.name}
+                                                                            onChange={(e) => { setNewName(e.target.value) }}
+                                                                        />
+
+                                                                        <Form.Control
+                                                                            type="number"
+                                                                            placeholder={user.phoneNumber}
+                                                                            onChange={(e) => { setNewNumber(e.target.value) }}
+                                                                        />
+
+                                                                        <Form.Control
+                                                                            type="email"
+                                                                            placeholder={user.email}
+                                                                            onChange={(e) => { setNewEmail(e.target.value) }}
+                                                                        />
+                                                                    </div>
+
+                                                                    <div className='userDataInputCol2'>
+
+                                                                        <Form.Control
+                                                                            type="text"
+                                                                            placeholder={newDob}
+                                                                            onChange={(e) => { setNewDob(e.target.value) }}
+                                                                        />
+
+                                                                        <Form.Control
+                                                                            min={1}
+                                                                            max={2}
+                                                                            type="number"
+                                                                            placeholder={user.age}
+                                                                        />
+
+                                                                        {/* <label className="form-label label-text">Gender :</label> */}
+
+                                                                        {/* <div className='segment-control'>
+                                                                            <input type="radio" className="btn-check active" name="options-outlined" autoComplete="off" value="male" onChange={(e) => { setNewGender(e.target.value) }} />
+                                                                            <label className="btn segment-btn" htmlFor="male-outlined">Male</label>
+
+                                                                            <input type="radio" className="btn-check" name="options-outlined" autoComplete="off" value="female" onChange={(e) => { setNewGender(e.target.value) }} />
+                                                                            <label className="btn segment-btn" htmlFor="female-outlined">Female</label>
+
+                                                                            <input type="radio" className="btn-check" name="options-outlined" autoComplete="off" value="other" onChange={(e) => { setNewGender(e.target.value) }} />
+                                                                            <label className="btn segment-btn" htmlFor="others-outlined">Others</label>
+                                                                        </div> */}
+
+                                                                        <div className='segment-control'>
+                                                                            <input type="radio" className="btn-check active" name="options-outlined" id="male-outlined" autoComplete="off" value="male" onChange={(e) => { setNewGender(e.target.value) }} />
+                                                                            <label className="btn  segment-btn" htmlFor="male-outlined">Male</label>
+
+                                                                            <input type="radio" className="btn-check" name="options-outlined" id="female-outlined" autoComplete="off" value="female" onChange={(e) => { setNewGender(e.target.value) }} />
+                                                                            <label className="btn segment-btn" htmlFor="female-outlined">Female</label>
+
+                                                                            <input type="radio" className="btn-check" name="options-outlined" id="others-outlined" autoComplete="off" value="other" onChange={(e) => { setNewGender(e.target.value) }} />
+                                                                            <label className="btn  segment-btn" htmlFor="others-outlined">Others</label>
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+
+                                                        <Row>
+                                                            <Col md={12} lg={12}>
+                                                                <div className='userImgInputCntr text-center'>
+                                                                    <div className='uploadCntr'>
+
+                                                                        <div className="file-input" {...getRootProps()}>
+                                                                            <input {...getInputProps()} />
+                                                                            <VscCloudUpload />
+                                                                            <p>Click here to upload new image</p>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+
+                                                    </Modal.Body>
+
+                                                    <Modal.Footer>
+                                                        <Button className='discardBtn' onClick={() => handleClose(index)}>
+                                                            Discard
+                                                        </Button>
+                                                        <Button className='updateBtn' onClick={() => handleUpdateUser(user._id, user)}>
+                                                            Update
+                                                        </Button>
+                                                    </Modal.Footer>
+                                                </Form>
+
+                                            </Modal>
+                                        </React.Fragment>
                                     )
                                 }) :
                                     <tr className='dataTr'>
@@ -141,101 +270,6 @@ const UpdateComponent = () => {
                     </Col>
                 </Row>
             </Container>
-
-            <Modal show={isUpdateModal} onHide={handleClose} className='updateModal'>
-                <Form noValidate>
-
-                    <Modal.Header>
-                        <Modal.Title></Modal.Title>
-                        <img src='/images/closeBtn.png' alt='' className='closeBtn' onClick={handleClose} />
-                    </Modal.Header>
-
-                    <Modal.Body>
-
-                        <Row>
-                            <Col md={12} lg={12}>
-
-                                <div className='userDataInputCntr'>
-                                    <div className='userDataInputCol1'>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="First name"
-                                        />
-
-                                        <Form.Control
-                                            type="number"
-                                            placeholder="Phone number"
-                                        />
-
-                                        <Form.Control
-                                            type="email"
-                                            placeholder="Mail address"
-                                        />
-                                    </div>
-
-                                    <div className='userDataInputCol2'>
-
-                                        <Form.Control
-                                            type="date"
-                                            placeholder="Date of birth"
-                                        />
-
-                                        <Form.Control
-                                            disabled
-                                            type="number"
-                                            placeholder="Age calculated automatically"
-                                        />
-
-                                        {/* <label className="form-label label-text">Gender :</label> */}
-
-                                        <div className='segment-control'>
-                                            <input type="radio" className="btn-check active" name="options-outlined" autoComplete="off" value="male" onChange={(e) => { setGender(e.target.value) }} />
-                                            <label className="btn  segment-btn" htmlFor="male-outlined">Male</label>
-
-                                            <input type="radio" className="btn-check" name="options-outlined" autoComplete="off" value="female" onChange={(e) => { setGender(e.target.value) }} />
-                                            <label className="btn segment-btn" htmlFor="female-outlined">Female</label>
-
-                                            <input type="radio" className="btn-check" name="options-outlined" autoComplete="off" value="other" onChange={(e) => { setGender(e.target.value) }} />
-                                            <label className="btn  segment-btn" htmlFor="others-outlined">Others</label>
-                                        </div>
-
-                                        {errors.gender && <span className="error">{errors.gender}</span>}
-
-                                    </div>
-
-                                </div>
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col md={12} lg={12}>
-                                <div className='userImgInputCntr text-center'>
-                                    <div className='uploadCntr'>
-
-                                        <div className="file-input" {...getRootProps()}>
-                                            <input {...getInputProps()} />
-                                            <VscCloudUpload />
-                                            <p>Upload</p>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </Col>
-                        </Row>
-
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <Button className='discardBtn' onClick={handleClose}>
-                            Discard
-                        </Button>
-                        <Button className='updateBtn' onClick={handleUpdateUser}>
-                            Update
-                        </Button>
-                    </Modal.Footer>
-                </Form>
-
-            </Modal>
         </section >
     );
 };

@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Modal, Button, Form } from 'react-bootstrap'
 import axios from 'axios'
-import { LiaUserEditSolid } from 'react-icons/lia'
-import { useDropzone } from 'react-dropzone';
 import { MdOutlineDelete } from 'react-icons/md'
 
 
 const DeleteComponent = () => {
 
   const [userData, setUserData] = useState([])
-  const [userDob, setUserDob] = useState([])
-  const [isUpdateModal, setIsUpdateModal] = useState(false)
-  const [gender, setGender] = useState('')
-  const [errors, setErrors] = useState({});
-  const [image, setImage] = useState(null)
+  const [isUpdateModal, setIsUpdateModal] = useState([])
 
+  const handleClose = (userId) => {
+    // setIsUpdateModal(false)
 
+    setIsUpdateModal((prev) => {
+      const updatedState = [...prev];
+      updatedState[userId] = false;
+      return updatedState;
+    });
 
-  const handleClose = () => setIsUpdateModal(false);
-  const handleShow = () => setIsUpdateModal(true);
+  }
 
   const fetchUserList = async () => {
 
@@ -26,6 +26,7 @@ const DeleteComponent = () => {
       const user = await axios.get('http://localhost:3001/api/users')
       console.log(user.data, 'userdata');
       setUserData(user.data)
+      setIsUpdateModal(new Array(user.data.length).fill(false));
     }
     catch (err) {
       console.error(err, 'error fetching user list');
@@ -35,17 +36,22 @@ const DeleteComponent = () => {
 
 
   const handleDeleteUser = async (userId) => {
+
+
+    console.log(userId, 'deleteUseriD');
+
     if (!userId) {
-      console.log("No user selected for deletion");
+      alert("No user selected for deletion");
       return;
     }
 
     try {
-      const response = await axios.delete(`http://localhost:3001/api/users/${userId}`);
+      const envApiLink = process.env.REACT_APP_DEV_API
+      const response = await axios.delete(`${envApiLink}/${userId}`);
       console.log('User Deleted:', response.data);
-      // Assuming you also want to update the user list after deletion
+
       fetchUserList();
-      setIsUpdateModal(false);
+      handleClose(userId)
     } catch (error) {
       console.error('Error deleting user:', error);
       console.log('Request config:', error.config);
@@ -76,27 +82,28 @@ const DeleteComponent = () => {
               </thead>
 
               <tbody>
-                {userData.length > 0 ? userData.map((user) => {
+                {userData.length > 0 ? userData.map((user, index) => {
                   let dob = user.dob
                   let newDob = dob.split('T')[0]
                   return (
-                    <>                    <tr key={user.email} className='dataTr'>
-                      <td className='tdFirst'><img src={`http://localhost:3001/${user.image}`} alt='user image' className='imgBox' /> </td>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>{user.phoneNumber}</td>
-                      <td>{user.gender}</td>
-                      <td>{newDob}</td>
-                      <td className='tdLast'>
-                        <MdOutlineDelete className='editIcon' onClick={() => setIsUpdateModal(true)} />
-                      </td>
-                    </tr>
+                    <React.Fragment key={user._id}>
+                      <tr className='dataTr' >
+                        <td className='tdFirst'><img src={`http://localhost:3001/${user.image}`} alt='user image' className='imgBox' /> </td>
+                        <td className='tdSecond'>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.phoneNumber}</td>
+                        <td>{user.gender}</td>
+                        <td>{newDob}</td>
+                        <td className='tdLast'>
+                          <MdOutlineDelete className='editIcon' onClick={() => setIsUpdateModal((prev) => prev.map((value, i) => (i === index ? true : value)))} />
+                        </td>
+                      </tr>
 
-                      <Modal show={isUpdateModal} onHide={handleClose} className='updateModal DeleteModal'>
+                      <Modal show={isUpdateModal[index]} onHide={() => handleClose(index)} className='updateModal DeleteModal'>
                         <Form noValidate>
                           <Modal.Header>
                             <Modal.Title></Modal.Title>
-                            <img src='/images/closeBtn.png' alt='' className='closeBtn' onClick={handleClose} />
+                            <img src='/images/closeBtn.png' alt='' className='closeBtn' onClick={() => handleClose(index)} />
                           </Modal.Header>
 
                           <Modal.Body className='d-flex align-items-center'>
@@ -104,7 +111,7 @@ const DeleteComponent = () => {
                           </Modal.Body>
 
                           <Modal.Footer>
-                            <Button className='discardBtn' onClick={handleClose}>
+                            <Button className='discardBtn' onClick={() => handleClose(index)}>
                               No
                             </Button>
                             <Button className='updateBtn' onClick={() => handleDeleteUser(user._id)}>
@@ -113,7 +120,7 @@ const DeleteComponent = () => {
                           </Modal.Footer>
                         </Form>
                       </Modal>
-                    </>
+                    </React.Fragment>
                   )
                 }) :
                   <tr className='dataTr'>

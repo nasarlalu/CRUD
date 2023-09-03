@@ -1,0 +1,27 @@
+@media only screen and (max-width: 600px) {
+
+    .createCrudSection {
+        display: block;
+        margin-top: 3rem;
+    }
+
+    .userDataInputCntr {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 1rem;
+    }
+    .userDataInputCol1{
+        margin-right: unset;
+    }
+    .userImgInputCntr{
+        margin: 1.5rem 0;
+        padding: 1rem;
+    }
+    .userSubmitBtn{
+        margin-bottom: 1rem;
+    }
+    .readCrudSection{
+        margin: 0;
+    }
+}

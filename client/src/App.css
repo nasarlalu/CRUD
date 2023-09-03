@@ -1,18 +1,11 @@
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Hide scrollbar*/
+.scrollBarHidden::-webkit-scrollbar {
+  display: none;
 }
 
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+.scrollBarHidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* placeholder text style */
@@ -35,6 +28,10 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   overflow: hidden;
 }
 
+.scrollBarHidden {
+  overflow-y: scroll;
+}
+
 .tabMenu {
   background-color: var(--violet);
   padding: 3rem 0;
@@ -53,7 +50,7 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   color: #f1f1f1;
   display: flex;
   align-items: center;
-  transition: border-radius 0.3s ease;
+  /* transition: border-radius 0.3s ease; */
 }
 
 .activeTabBg {
@@ -126,6 +123,14 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   height: 2.5rem;
   display: flex;
   align-items: center;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  background-color: #fff !important;
+  transform: scale(1.05);
+  box-shadow: unset;
+  border-color: #8b92ae;
 }
 
 .segment-control {
@@ -222,6 +227,15 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   padding: 1rem;
   border-bottom: unset;
   padding-left: 1rem;
+  color: #6a6a6a;
+  font-size: 0.9rem;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+}
+
+.dataTr:hover td {
+  color: var(--violet);
+
 }
 
 .tableSection th {
@@ -239,15 +253,14 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   margin-bottom: 1rem;
 }
 
-.tableSection td {
-  border-top: 1px solid #aaa;
-  border-bottom: 1px solid #aaa;
-}
-
 .tdFirst {
   border-left: 1px solid #aaa;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+}
+
+.tdSecond {
+  text-transform: capitalize;
 }
 
 .tdLast {
@@ -366,4 +379,14 @@ table {
 .delete .createTabCntr,
 .delete .readTabCntr {
   margin-left: 1rem;
+}
+
+.cursorUnset {
+  cursor: unset !important;
+}
+
+.createCrudSection {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }

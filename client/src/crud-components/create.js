@@ -72,7 +72,7 @@ const CreateComponent = () => {
                 formData.append('image', image); // Only append if image is not null
             }
 
-            const response = await axios.post('http://localhost:3001/api/signup', formData, {
+            const response = await axios.post(process.env.REACT_APP_DEV_SIGNUP_API, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data' // Set the content type to multipart/form-data
                 }
@@ -82,14 +82,14 @@ const CreateComponent = () => {
             // navigate('/account-created')
             alert('User created successfully')
 
-            setName('')
-            setAge('')
-            setDob('')
-            setEmail('')
-            setImage('')
-            setGender('')
-            setPhoneNumber('')
-            setPrevImage('')
+            // setName('')
+            // setAge('')
+            // setDob('')
+            // setEmail('')
+            // setImage('')
+            // setGender('')
+            // setPhoneNumber('')
+            // setPrevImage('')
         } catch (err) {
             console.error(err, 'Error while signup in frontend');
             setModalShow(true)
@@ -248,19 +248,13 @@ const CreateComponent = () => {
                                 <div className='userImgInputCntr text-center'>
                                     <div className='uploadCntr'>
 
-                                        <div className="file-input" {...getRootProps()}>
+                                        <div className={prevImage ? 'cursorUnset' : 'file-input'} {...getRootProps()}>
                                             <input {...getInputProps()} />
-                                            <VscCloudUpload />
-                                            <p>Upload</p>
+                                            <VscCloudUpload className={prevImage ? 'd-none cursorUnset' : ''} />
+                                            <p>{prevImage ? <span style={{ color: 'green' }}>upload success! </span> : 'Upload'}</p>
                                             {errors.image && <span className="error imgErr">{errors.image}</span>}
 
                                         </div>
-
-                                        {prevImage && (
-                                            <div className='prevImage'>
-                                                <img src={prevImage} alt="Preview Img" />
-                                            </div>
-                                        )}
 
                                     </div>
                                 </div>

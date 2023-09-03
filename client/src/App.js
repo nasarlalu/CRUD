@@ -1,4 +1,5 @@
 import './App.css';
+import './responsive.css';
 import Login from './components/Login'
 import SignUp from './components/SignUp'
 import AccountCreated from './components/AccountCreated'
