@@ -390,3 +390,11 @@ table {
   align-items: center;
   height: 100%;
 }
+
+.tabMenuMob {
+  display: none;
+}
+
+.mobOnly {
+  display: none;
+}

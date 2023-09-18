@@ -3,25 +3,7 @@ const router = express.Router();
 const User = require('../models/users')
 const multer = require('multer');
 const path = require('path');
-
-
-//creating the user
-// router.post('/', (req, res) => {
-//     const { name, email, age } = req.body  //requesting data from client
-//     console.log(req.body, 'bodyDataFromRequest', name, email, age)
-
-//     const newUser = new User({ name, email, age }) //creating a new user by the data recieved from client
-
-//     newUser.save()
-//         .then((user) => {
-//             res.json(user)
-//             console.log('new user created');
-//         })
-//         .catch((error) => {
-//             console.error('Error creating user:', error);
-//             res.status(500).json({ error: 'Error creating user' })
-//         })
-// })
+const fs = require('fs')
 
 
 //Read all users
@@ -98,16 +80,45 @@ router.put('/:id', upload.single('image'), async (req, res) => {
 });
 
 
-//Delete a user
-router.delete('/:id', (req, res) => {
-    const { id } = req.params
-    User.findByIdAndRemove(id)
-        .then(() => {
-            res.json({ message: 'User deleted successfully' })
-        })
-        .catch(err => {
-            res.status(500).json({ error: 'Error deleting user' })
-        })
-})
+// //Delete a user
+// router.delete('/:id', (req, res) => {
+//     const { id } = req.params
+//     User.findByIdAndRemove(id)
+//         .then(() => {
+//             res.json({ message: 'User deleted successfully' })
+//         })
+//         .catch(err => {
+//             res.status(500).json({ error: 'Error deleting user' })
+//         })
+// })
+
+// Delete a user
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Find the user by ID to get the image path
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if the user has an associated image
+        if (user.image) {
+            // Delete the image file from the server
+            fs.unlinkSync(user.image);
+        }
+
+        // Delete the user from the database
+        await User.findByIdAndRemove(id);
+
+        return res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ error: 'Error deleting user' });
+    }
+});
+
 
 module.exports = router

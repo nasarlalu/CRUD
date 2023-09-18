@@ -1,8 +1,16 @@
 @media only screen and (max-width: 600px) {
 
+    .deskOnly {
+        display: none;
+    }
+
+    .mobOnly {
+        display: block;
+    }
+
     .createCrudSection {
         display: block;
-        margin-top: 3rem;
+        margin: 3rem 0;
     }
 
     .userDataInputCntr {
@@ -11,17 +19,125 @@
         margin: 0;
         padding: 1rem;
     }
-    .userDataInputCol1{
+
+    .userDataInputCol1 {
         margin-right: unset;
     }
-    .userImgInputCntr{
+
+    .userDataInputCol1,
+    .userDataInputCol2 {
+        width: 100%;
+    }
+
+    .userImgInputCntr {
         margin: 1.5rem 0;
         padding: 1rem;
     }
-    .userSubmitBtn{
+
+    .userSubmitBtn {
         margin-bottom: 1rem;
     }
-    .readCrudSection{
+
+    .readCrudSection {
         margin: 0;
+    }
+
+    .root-container {
+        display: flex;
+        height: auto;
+        overflow: scroll;
+        flex-direction: column-reverse;
+    }
+
+    .tabMenu {
+        display: none;
+    }
+
+    .tabMenuMob {
+        display: block;
+        background-color: #574692;
+        color: #fff;
+        padding: 0 3rem;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        z-index: 99;
+        height: 10vh;
+    }
+
+    .tabMenuMob ul {
+        align-items: center;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 0;
+        padding: 1rem 0 3rem 0;
+    }
+
+    .tabMenuMob li {
+        background-color: #fff;
+        border-radius: 3rem;
+        padding: 5px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+    }
+
+    .tabMenuMob svg {
+        color: #fff;
+        background-color: #574692;
+        border-radius: 3rem;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+    }
+
+    .tabMenuMob .mobTabCntr {
+        position: relative;
+        width: 2rem;
+    }
+
+    .segment-control {
+        justify-content: space-between;
+        width: -moz-fit-content;
+        width: auto;
+        padding: 4px 6px;
+        border-radius: 1rem;
+        border: 1px solid #8b92ae;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .createCrudSection {
+        display: block;
+        margin: unset;
+        max-height: 80vh;
+        overflow-y: scroll;
+        margin-bottom: 3rem
+    }
+
+    .crudTitle {
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin: 2rem 0;
+    }
+
+    .error {
+        display: inline-block;
+        color: #8d2306;
+        font-size: 12px;
+        padding: 0 0 1rem 0;
+        position: unset;
+    }
+
+    .genderErr {
+        padding-bottom: 0 !important;
     }
 }

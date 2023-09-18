@@ -156,11 +156,18 @@ const CreateComponent = () => {
     return (
         <section className='createCrudSection'>
             <Container>
+
+                <Row className='mobOnly'>
+                    <Col sm={12}>
+                        <p className='text-center crudTitle'>Create a new user</p>
+                    </Col>
+                </Row>
+
                 <Row>
                     <Form noValidate onSubmit={handleSubmit}>
 
                         <Row>
-                            <Col md={12} lg={12}>
+                            <Col md={12} lg={12} sm={12}>
 
                                 <div className='userDataInputCntr'>
                                     <div className='userDataInputCol1'>
@@ -244,7 +251,7 @@ const CreateComponent = () => {
                         </Row>
 
                         <Row>
-                            <Col md={12} lg={12}>
+                            <Col md={12} lg={12} sm={12}>
                                 <div className='userImgInputCntr text-center'>
                                     <div className='uploadCntr'>
 

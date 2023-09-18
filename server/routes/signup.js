@@ -50,31 +50,3 @@ router.post('/', upload.single('image'), async (req, res) => {
 });
 
 module.exports = router;
-
-
-// const calculateAge = (dob) => {
-//     const birthDate = new Date(dob);
-//     const currentDate = new Date();
-//     const age = currentDate.getFullYear() - birthDate.getFullYear();
-//     const monthDiff = currentDate.getMonth() - birthDate.getMonth();
-    
-//     if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDate.getDate())) {
-//         return age - 1;
-//     }
-    
-//     return age;
-// };
-
-// router.post('/', (req, res) => {
-//     const { name, email, dob, /* other fields */ } = req.body;
-
-//     const newUser = new User({
-//         name,
-//         email,
-//         dob,
-//         age: calculateAge(dob), // Calculate age using the provided function
-//         /* other fields */
-//     });
-
-//     // ... save newUser and handle errors ...
-// });

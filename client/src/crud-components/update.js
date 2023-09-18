@@ -190,19 +190,6 @@ const UpdateComponent = () => {
                                                                             placeholder={user.age}
                                                                         />
 
-                                                                        {/* <label className="form-label label-text">Gender :</label> */}
-
-                                                                        {/* <div className='segment-control'>
-                                                                            <input type="radio" className="btn-check active" name="options-outlined" autoComplete="off" value="male" onChange={(e) => { setNewGender(e.target.value) }} />
-                                                                            <label className="btn segment-btn" htmlFor="male-outlined">Male</label>
-
-                                                                            <input type="radio" className="btn-check" name="options-outlined" autoComplete="off" value="female" onChange={(e) => { setNewGender(e.target.value) }} />
-                                                                            <label className="btn segment-btn" htmlFor="female-outlined">Female</label>
-
-                                                                            <input type="radio" className="btn-check" name="options-outlined" autoComplete="off" value="other" onChange={(e) => { setNewGender(e.target.value) }} />
-                                                                            <label className="btn segment-btn" htmlFor="others-outlined">Others</label>
-                                                                        </div> */}
-
                                                                         <div className='segment-control'>
                                                                             <input type="radio" className="btn-check active" name="options-outlined" id="male-outlined" autoComplete="off" value="male" onChange={(e) => { setNewGender(e.target.value) }} />
                                                                             <label className="btn  segment-btn" htmlFor="male-outlined">Male</label>

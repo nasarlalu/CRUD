@@ -25,18 +25,12 @@ export default function ReadComponent() {
     fetchUserList()
   }, [])
 
+
   return (
     <section className='readCrudSection tableSection'>
       <Container>
         <Row>
           <Col lg={12} md={12}>
-
-            {/* <table>
-
-
-            </table> */}
-
-
             <table className='table2'>
               <thead>
                 <tr>
@@ -76,10 +70,14 @@ export default function ReadComponent() {
 
               </tbody>
             </table>
-
           </Col>
         </Row>
       </Container>
     </section>
   )
 }
+
+
+
+
+

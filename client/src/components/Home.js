@@ -14,7 +14,15 @@ import { AiOutlineDelete } from 'react-icons/ai'
 const Home = () => {
 
     const tabs = ['create', 'read', 'update', 'delete'];
-    const [selectedTab, setSelectedTab] = useState('create');
+    const [selectedTab, setSelectedTab] = useState('create')
+    const [isActive, setIsActive] = useState('')
+
+    const handleActiveTabMob = (tabName) => {
+
+        if (tabName === selectedTab) {
+            setIsActive('isActive')
+        }
+    }
 
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
@@ -50,6 +58,25 @@ const Home = () => {
                                     {tabName === 'update' && <LiaUserEditSolid />}
                                     {tabName === 'delete' && <AiOutlineDelete />}
                                     {tabName.charAt(0).toUpperCase() + tabName.slice(1)}
+                                </li>
+                            </div>
+                        ))}
+                    </ul>
+                </div >
+
+                <div className='tabMenuMob'>
+                    <ul>
+                        {tabs.map(tabName => (
+                            <div key={tabName} className={'mobTabCntr'}>
+
+                                <li
+                                    className={isActive}
+                                    onClick={() => handleTabClick(tabName)}
+                                >
+                                    {tabName === 'create' && <GoPersonAdd />}
+                                    {tabName === 'read' && <SiDarkreader />}
+                                    {tabName === 'update' && <LiaUserEditSolid />}
+                                    {tabName === 'delete' && <AiOutlineDelete />}
                                 </li>
                             </div>
                         ))}
