@@ -398,3 +398,68 @@ table {
 .mobOnly {
   display: none;
 }
+
+.userCard {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.userCardBody {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  padding: 0;
+}
+
+.idCntr {
+  color: #fff;
+  background-color: #574692;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.photoCntr {
+  width: 100%;
+}
+
+.photoCntr img {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  float: right;
+  border-radius: 18rem;
+}
+
+.dataCntr {
+  padding: 1rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+
+.dataCntr::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+
+}
+
+.dataCntr .card-title {
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: capitalize
+}
+
+.dataCntr .text-muted {
+  font-size: .8rem;
+}
+
+.dataCntr .card-text {
+  margin-bottom: 0;
+  font-size: .8rem;
+}

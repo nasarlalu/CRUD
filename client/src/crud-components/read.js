@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import axios from 'axios'
+import Card from 'react-bootstrap/Card';
 
 export default function ReadComponent() {
 
   const [userData, setUserData] = useState([])
-  const [userDob, setUserDob] = useState([])
 
   const fetchUserList = async () => {
 
@@ -29,7 +29,14 @@ export default function ReadComponent() {
   return (
     <section className='readCrudSection tableSection'>
       <Container>
-        <Row>
+
+        <Row className='mobOnly'>
+          <Col sm={12}>
+            <p className='text-center crudTitle'>Reading The entire user list</p>
+          </Col>
+        </Row>
+
+        <Row className='deskOnly'>
           <Col lg={12} md={12}>
             <table className='table2'>
               <thead>
@@ -71,6 +78,51 @@ export default function ReadComponent() {
               </tbody>
             </table>
           </Col>
+        </Row>
+
+        <Row className='mobOnly'>
+          <Col sm={12}>
+
+            {userData.length > 0 ? userData.map((user, index) => {
+              let dob = user.dob
+              let newDob = dob.split('T')[0]
+
+              console.log(user.image)
+
+              let apiURL = `http://localhost:3001/${user.image}`
+              let userImgUrl = apiURL.replace(/\\/g, '/')
+
+              return (
+                <Card className='userCard'>
+                  <Card.Body className='userCardBody'>
+
+                    <div className='idCntr'>
+                      {index + 1}
+                    </div>
+
+                    <div className='dataCntr'>
+                      <Card.Title>{user.name}</Card.Title>
+                      <Card.Subtitle className="mb-2 text-muted">{user.email}</Card.Subtitle>
+                      <Card.Text>{user.phoneNumber}</Card.Text>
+                      <Card.Text>{user.gender}</Card.Text>
+                      <Card.Text>{newDob}</Card.Text>
+                    </div>
+
+                  </Card.Body>
+                </Card>
+              )
+            })
+
+              :
+              <Card>
+                <Card.Body>
+                  <Card.Title>Error Getting User Deatils</Card.Title>
+                  <Card.Link href="#">Go Back</Card.Link>
+                </Card.Body>
+              </Card>
+            }
+          </Col>
+
         </Row>
       </Container>
     </section>
