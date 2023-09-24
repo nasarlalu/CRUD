@@ -16,7 +16,7 @@ require('./models/db');
 // Use the CORS middleware before defining routes
 
 app.use(cors({
-    origin: [process.env.SERVER_ENDPOINT, PORT],
+    origin: process.env.SERVER_ENDPOINT,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: 'true'
 }));

@@ -99,14 +99,14 @@ const CreateComponent = () => {
 
             alert('User created successfully')
 
-            // setName('')
-            // setAge('')
-            // setDob('')
-            // setEmail('')
-            // setImage('')
-            // setGender('')
-            // setPhoneNumber('')
-            // setPrevImage('')
+            setName('')
+            setAge('')
+            setDob('')
+            setEmail('')
+            setImage('')
+            setGender('')
+            setPhoneNumber('')
+            setPrevImage('')
         } catch (err) {
             console.error(err, 'Error while signup in frontend');
             setModalShow(true)
