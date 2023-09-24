@@ -9,6 +9,7 @@ const sampledata = require('./routes/sampleData');
 const userRoutes = require('./routes/user');
 const signupRoutes = require('./routes/signup');
 
+
 require('dotenv').config();
 require('./models/db');
 
