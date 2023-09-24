@@ -140,4 +140,14 @@
     .genderErr {
         padding-bottom: 0 !important;
     }
+    .updateCrudSection {
+        margin: 0;
+    }
+    .updateModal.DeleteModal .modal-dialog{
+        margin: 0 auto;
+    }
+    .fade.updateModal.DeleteModal.modal.show{
+        display: flex !important;
+        align-items: center;
+    }
 }

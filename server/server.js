@@ -6,15 +6,20 @@ const PORT = process.env.PORT || 3001;
 const path = require('path');
 
 const sampledata = require('./routes/sampleData');
-const studentsData = require('./routes/user-old');
 const userRoutes = require('./routes/user');
 const signupRoutes = require('./routes/signup');
 
 require('dotenv').config();
 require('./models/db');
 
+
 // Use the CORS middleware before defining routes
-app.use(cors());
+
+app.use(cors({
+    origin: [process.env.SERVER_ENDPOINT, PORT],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: 'true'
+}));
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -29,7 +34,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/sampledata', sampledata);
-app.use('/api/students', studentsData);
 app.use('/api/users', userRoutes);
 app.use('/api/signup', signupRoutes)
 

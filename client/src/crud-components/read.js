@@ -12,7 +12,6 @@ export default function ReadComponent() {
     try {
 
       const user = await axios.get(process.env.REACT_APP_DEV_API)
-      console.log(user.data, 'userdata');
       setUserData(user.data)
     }
     catch (err) {
@@ -24,6 +23,9 @@ export default function ReadComponent() {
   useEffect(() => {
     fetchUserList()
   }, [])
+
+  const apiUrlFromEnv = process.env.REACT_APP_ROOT_API
+
 
 
   return (
@@ -56,7 +58,7 @@ export default function ReadComponent() {
                   let newDob = dob.split('T')[0]
                   return (
                     <tr key={user.email} className='dataTr'>
-                      <td className='tdFirst'><img src={`http://localhost:3001/${user.image}`} alt='user image' className='imgBox' /> </td>
+                      <td className='tdFirst'><img src={`${apiUrlFromEnv}${user.image}`} alt='user image' className='imgBox' /> </td>
                       <td className='tdSecond'>{user.name}</td>
                       <td>{user.email}</td>
                       <td>{user.phoneNumber}</td>
@@ -87,13 +89,11 @@ export default function ReadComponent() {
               let dob = user.dob
               let newDob = dob.split('T')[0]
 
-              console.log(user.image)
-
-              let apiURL = `http://localhost:3001/${user.image}`
+              let apiURL = `${apiUrlFromEnv}${user.image}`
               let userImgUrl = apiURL.replace(/\\/g, '/')
 
               return (
-                <Card className='userCard'>
+                <Card className='userCard' key={user._id}>
                   <Card.Body className='userCardBody'>
 
                     <div className='idCntr'>
@@ -105,7 +105,12 @@ export default function ReadComponent() {
                       <Card.Subtitle className="mb-2 text-muted">{user.email}</Card.Subtitle>
                       <Card.Text>{user.phoneNumber}</Card.Text>
                       <Card.Text>{user.gender}</Card.Text>
+                      <Card.Text>{user.age}</Card.Text>
                       <Card.Text>{newDob}</Card.Text>
+                    </div>
+
+                    <div className='userImgCntr'>
+                      <img src={userImgUrl} alt='userImage' />
                     </div>
 
                   </Card.Body>
@@ -117,7 +122,7 @@ export default function ReadComponent() {
               <Card>
                 <Card.Body>
                   <Card.Title>Error Getting User Deatils</Card.Title>
-                  <Card.Link href="#">Go Back</Card.Link>
+                  <Card.Link href="/">Go Back</Card.Link>
                 </Card.Body>
               </Card>
             }

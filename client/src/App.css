@@ -406,8 +406,30 @@ table {
 
 .userCardBody {
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 20% 60% 20%;
   padding: 0;
+}
+
+.userCardBody .userImgCntr img {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: 6rem;
+  margin-top: 1rem;
+  background-color: #574692;
+}
+
+.userCardBody button {
+  width: fit-content;
+  padding: 4px 12px;
+  margin-top: 1rem;
+  font-size: .8rem;
+  text-transform: uppercase;
+  background-color: #574692;
+  color: #fff;
+  border-radius: 3px;
+  border: unset;
+  cursor: pointer;
 }
 
 .idCntr {

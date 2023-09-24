@@ -4,6 +4,8 @@ import axios from 'axios'
 import { LiaUserEditSolid } from 'react-icons/lia'
 import { useDropzone } from 'react-dropzone';
 import { VscCloudUpload } from 'react-icons/vsc'
+import Card from 'react-bootstrap/Card';
+
 
 
 const UpdateComponent = () => {
@@ -58,16 +60,13 @@ const UpdateComponent = () => {
             }
             else {
                 formData.append('image', currentUserData.image);
-                console.log(currentUserData.image, 'currImg');
             }
 
-            console.log(formData, 'formDataBeforeSendng');
 
             // Send a PUT request to update the user data
             const envApiLink = process.env.REACT_APP_DEV_API
             const response = await axios.put(`${envApiLink}/${userId}`, formData);
 
-            console.log('User updated:', response.data);
             fetchUserList();
             handleClose(userId)
             alert('updated successfully')
@@ -104,10 +103,20 @@ const UpdateComponent = () => {
         fetchUserList()
     }, [])
 
+    const apiUrlFromEnv = process.env.REACT_APP_ROOT_API
+
+
     return (
         <section className='updateCrudSection tableSection'>
             <Container>
-                <Row>
+
+                <Row className='mobOnly'>
+                    <Col sm={12}>
+                        <p className='text-center crudTitle'>Update user data</p>
+                    </Col>
+                </Row>
+
+                <Row className='deskOnly'>
                     <Col lg={12} md={12}>
 
                         <table className='table2'>
@@ -130,7 +139,7 @@ const UpdateComponent = () => {
                                     return (
                                         <React.Fragment key={user.email} >
                                             <tr className='dataTr'>
-                                                <td className='tdFirst'><img src={`http://localhost:3001/${user.image}`} alt='user image' className='imgBox' /> </td>
+                                                <td className='tdFirst'><img src={`${apiUrlFromEnv}${user.image}`} alt='user image' className='imgBox' /> </td>
                                                 <td className='tdSecond'>{user.name}</td>
                                                 <td>{user.email}</td>
                                                 <td>{user.phoneNumber}</td>
@@ -255,6 +264,54 @@ const UpdateComponent = () => {
                         </table>
 
                     </Col>
+                </Row>
+
+                <Row className='mobOnly'>
+                    <Col sm={12}>
+
+                        {users.length > 0 ? users.map((user, index) => {
+                            let dob = user.dob
+                            let newDob = dob.split('T')[0]
+
+                            let apiURL = `${apiUrlFromEnv}${user.image}`
+                            let userImgUrl = apiURL.replace(/\\/g, '/')
+
+                            return (
+                                <Card className='userCard' key={user._id}>
+                                    <Card.Body className='userCardBody'>
+
+                                        <div className='idCntr'>
+                                            {index + 1}
+                                        </div>
+
+                                        <div className='dataCntr'>
+                                            <Card.Title>{user.name}</Card.Title>
+                                            <Card.Subtitle className="mb-2 text-muted">{user.email}</Card.Subtitle>
+                                            <Card.Text>{user.phoneNumber}</Card.Text>
+                                            <Card.Text>{user.gender}</Card.Text>
+                                            <Card.Text>{newDob}</Card.Text>
+                                            <Button onClick={() => setIsUpdateModal((prev) => prev.map((value, i) => (i === index ? true : value)))}>Update Details</Button>
+                                        </div>
+
+                                        <div className='userImgCntr'>
+                                            <img src={userImgUrl} alt='userImage' />
+                                        </div>
+
+                                    </Card.Body>
+                                </Card>
+                            )
+                        })
+
+                            :
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title>Error Getting User Deatils</Card.Title>
+                                    <Card.Link href="/">Go Back</Card.Link>
+                                </Card.Body>
+                            </Card>
+                        }
+                    </Col>
+
                 </Row>
             </Container>
         </section >

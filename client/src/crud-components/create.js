@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import validator from 'validator';
-import { Container, Row, Col, Button, Form, InputGroup, Modal } from 'react-bootstrap'
+import { Container, Row, Col, Button, Form, Modal } from 'react-bootstrap'
 import { VscCloudUpload } from 'react-icons/vsc'
 import { useDropzone } from 'react-dropzone';
-import { useNavigate } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 
 const CreateComponent = () => {
 
@@ -20,7 +18,6 @@ const CreateComponent = () => {
     const [errorTxt, setErrorTxt] = useState('')
     const [modalShow, setModalShow] = useState(false);
     const [prevImage, setPrevImage] = useState(null)
-    const navigate = useNavigate()
 
 
     const onHide = () => setModalShow(!modalShow);
@@ -36,16 +33,38 @@ const CreateComponent = () => {
     });
 
     function handleImageDrop(acceptedFiles) {
-        if (acceptedFiles.length > 0) {
-            setImage(acceptedFiles[0]);
+        if (!acceptedFiles || acceptedFiles.length === 0) {
+            alert('Please select an image to upload.');
+            return;
+        }
 
+
+        let file = acceptedFiles[0]
+
+        if (file.size >= 1048576) {
+            alert('Image size should be under 1MB.')
+        }
+
+        else {
+            setImage(file);
             const reader = new FileReader();
             reader.onload = () => {
                 setPrevImage(reader.result);
             };
-            reader.readAsDataURL(acceptedFiles[0]);
+            reader.readAsDataURL(file);
         }
-    };
+    }
+
+
+    // img.onload = function () {
+    //     if (img.width > 1200 || img.height > 1200) {
+    //         alert('Image dimensions should be 500x500 or below.');
+    //     } else {
+    //     }
+    // };
+
+
+
 
 
     //adding inputted value to the state
@@ -78,8 +97,6 @@ const CreateComponent = () => {
                 }
             });
 
-            console.log('User created:', response.data);
-            // navigate('/account-created')
             alert('User created successfully')
 
             // setName('')
@@ -103,7 +120,7 @@ const CreateComponent = () => {
         //age-calculation
         let dob = new Date(inputAge);
         let today = new Date();
-        if (inputAge == today) {
+        if (inputAge === today) {
             alert("still not born")
         }
         else {
@@ -138,8 +155,8 @@ const CreateComponent = () => {
             newErrors.gender = 'Gender is not selected';
         }
 
-        if (!validator.isMobilePhone(phoneNumber, 'any')) {
-            newErrors.phoneNumber = 'Invalid phone number format or Undefined';
+        if (!validator.isMobilePhone(phoneNumber, 'en-IN',)) {
+            newErrors.phoneNumber = 'Invalid phone number format or Undefined or non-indian Number';
         }
 
         if (image == null || undefined) {
@@ -150,8 +167,9 @@ const CreateComponent = () => {
     };
 
     useEffect(() => {
-        console.log(errors, 'validation errors');
+        console.error(errors, 'validation errors');
     }, [errors])
+
 
     return (
         <section className='createCrudSection'>
@@ -164,7 +182,7 @@ const CreateComponent = () => {
                 </Row>
 
                 <Row>
-                    <Form noValidate onSubmit={handleSubmit}>
+                    <Form noValidate onSubmit={(e) => handleSubmit(e)}>
 
                         <Row>
                             <Col md={12} lg={12} sm={12}>

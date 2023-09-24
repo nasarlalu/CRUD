@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Modal, Button, Form } from 'react-bootstrap'
 import axios from 'axios'
 import { MdOutlineDelete } from 'react-icons/md'
-
+import Card from 'react-bootstrap/Card';
 
 const DeleteComponent = () => {
 
@@ -23,8 +23,7 @@ const DeleteComponent = () => {
   const fetchUserList = async () => {
 
     try {
-      const user = await axios.get('http://localhost:3001/api/users')
-      console.log(user.data, 'userdata');
+      const user = await axios.get(process.env.REACT_APP_DEV_API)
       setUserData(user.data)
       setIsUpdateModal(new Array(user.data.length).fill(false));
     }
@@ -38,8 +37,6 @@ const DeleteComponent = () => {
   const handleDeleteUser = async (userId) => {
 
 
-    console.log(userId, 'deleteUseriD');
-
     if (!userId) {
       alert("No user selected for deletion");
       return;
@@ -48,24 +45,32 @@ const DeleteComponent = () => {
     try {
       const envApiLink = process.env.REACT_APP_DEV_API
       const response = await axios.delete(`${envApiLink}/${userId}`);
-      console.log('User Deleted:', response.data);
+      alert('User Deleted Successfully', response.data);
 
       fetchUserList();
       handleClose(userId)
     } catch (error) {
       console.error('Error deleting user:', error);
-      console.log('Request config:', error.config);
     }
   };
 
   useEffect(() => {
     fetchUserList()
   }, [])
+  const apiUrlFromEnv = process.env.REACT_APP_ROOT_API
+
 
   return (
     <section className='updateCrudSection tableSection'>
       <Container>
-        <Row>
+
+        <Row className='mobOnly'>
+          <Col sm={12}>
+            <p className='text-center crudTitle'>Delete users</p>
+          </Col>
+        </Row>
+
+        <Row className='deskOnly'>
           <Col lg={12} md={12}>
 
             <table className='table2'>
@@ -88,7 +93,7 @@ const DeleteComponent = () => {
                   return (
                     <React.Fragment key={user._id}>
                       <tr className='dataTr' >
-                        <td className='tdFirst'><img src={`http://localhost:3001/${user.image}`} alt='user image' className='imgBox' /> </td>
+                        <td className='tdFirst'><img src={`${apiUrlFromEnv}${user.image}`} alt='user image' className='imgBox' /> </td>
                         <td className='tdSecond'>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{user.phoneNumber}</td>
@@ -137,6 +142,54 @@ const DeleteComponent = () => {
             </table>
 
           </Col>
+        </Row>
+
+        <Row className='mobOnly'>
+          <Col sm={12}>
+
+            {userData.length > 0 ? userData.map((user, index) => {
+              let dob = user.dob
+              let newDob = dob.split('T')[0]
+
+              let apiURL = `${apiUrlFromEnv}${user.image}`
+              let userImgUrl = apiURL.replace(/\\/g, '/')
+
+              return (
+                <Card className='userCard' key={user._id}>
+                  <Card.Body className='userCardBody'>
+
+                    <div className='idCntr'>
+                      {index + 1}
+                    </div>
+
+                    <div className='dataCntr'>
+                      <Card.Title>{user.name}</Card.Title>
+                      <Card.Subtitle className="mb-2 text-muted">{user.email}</Card.Subtitle>
+                      <Card.Text>{user.phoneNumber}</Card.Text>
+                      <Card.Text>{user.gender}</Card.Text>
+                      <Card.Text>{newDob}</Card.Text>
+                      <Button onClick={() => setIsUpdateModal((prev) => prev.map((value, i) => (i === index ? true : value)))}>Delete the user</Button>
+                    </div>
+
+                    <div className='userImgCntr'>
+                      <img src={userImgUrl} alt='userImage' />
+                    </div>
+
+                  </Card.Body>
+                </Card>
+              )
+            })
+
+              :
+              <Card>
+                <Card.Body>
+                  <Card.Title>Error Getting User Deatils</Card.Title>
+                  <Card.Link href="/">Go Back</Card.Link>
+                </Card.Body>
+              </Card>
+            }
+          </Col>
+
         </Row>
       </Container>
     </section >

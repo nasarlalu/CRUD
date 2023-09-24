@@ -80,17 +80,6 @@ router.put('/:id', upload.single('image'), async (req, res) => {
 });
 
 
-// //Delete a user
-// router.delete('/:id', (req, res) => {
-//     const { id } = req.params
-//     User.findByIdAndRemove(id)
-//         .then(() => {
-//             res.json({ message: 'User deleted successfully' })
-//         })
-//         .catch(err => {
-//             res.status(500).json({ error: 'Error deleting user' })
-//         })
-// })
 
 // Delete a user
 router.delete('/:id', async (req, res) => {
