@@ -22,8 +22,11 @@ const DeleteComponent = () => {
 
   const fetchUserList = async () => {
 
+    const apiUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_API : process.env.REACT_APP_PROD_API;
+
+
     try {
-      const user = await axios.get(process.env.REACT_APP_DEV_API)
+      const user = await axios.get(apiUrl)
       setUserData(user.data)
       setIsUpdateModal(new Array(user.data.length).fill(false));
     }
@@ -37,13 +40,16 @@ const DeleteComponent = () => {
   const handleDeleteUser = async (userId) => {
 
 
+
     if (!userId) {
       alert("No user selected for deletion");
       return;
     }
 
+    const apiUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_API : process.env.REACT_APP_PROD_API;
+
     try {
-      const envApiLink = process.env.REACT_APP_DEV_API
+      const envApiLink = apiUrl
       const response = await axios.delete(`${envApiLink}/${userId}`);
       alert('User Deleted Successfully', response.data);
 
@@ -57,7 +63,9 @@ const DeleteComponent = () => {
   useEffect(() => {
     fetchUserList()
   }, [])
-  const apiUrlFromEnv = process.env.REACT_APP_ROOT_API
+
+  // const rootApiUrl = process.env.REACT_APP_ROOT_API
+  const rootApiUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_ROOT_API : process.env.REACT_APP_PROD_ROOT_API;
 
 
   return (
@@ -93,7 +101,7 @@ const DeleteComponent = () => {
                   return (
                     <React.Fragment key={user._id}>
                       <tr className='dataTr' >
-                        <td className='tdFirst'><img src={`${apiUrlFromEnv}${user.image}`} alt='user image' className='imgBox' /> </td>
+                        <td className='tdFirst'><img src={`${rootApiUrl}${user.image}`} alt='user image' className='imgBox' /> </td>
                         <td className='tdSecond'>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{user.phoneNumber}</td>
@@ -151,7 +159,7 @@ const DeleteComponent = () => {
               let dob = user.dob
               let newDob = dob.split('T')[0]
 
-              let apiURL = `${apiUrlFromEnv}${user.image}`
+              let apiURL = `${rootApiUrl}${user.image}`
               let userImgUrl = apiURL.replace(/\\/g, '/')
 
               return (

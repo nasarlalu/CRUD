@@ -1,13 +1,13 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "CRUD application using MERN stack ",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon server.js"
   },
-  "author": "",
+  "author": "Syed Nasar",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",

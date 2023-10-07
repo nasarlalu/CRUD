@@ -9,9 +9,11 @@ export default function ReadComponent() {
 
   const fetchUserList = async () => {
 
-    try {
+    const apiUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_API : process.env.REACT_APP_PROD_API;
 
-      const user = await axios.get(process.env.REACT_APP_DEV_API)
+
+    try {
+      const user = await axios.get(apiUrl)
       setUserData(user.data)
     }
     catch (err) {
@@ -24,8 +26,7 @@ export default function ReadComponent() {
     fetchUserList()
   }, [])
 
-  const apiUrlFromEnv = process.env.REACT_APP_ROOT_API
-
+  const rootApiUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_ROOT_API : process.env.REACT_APP_PROD_ROOT_API;
 
 
   return (
@@ -43,7 +44,7 @@ export default function ReadComponent() {
             <table className='table2'>
               <thead>
                 <tr>
-                  <th></th>
+                  <th>Image</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone number</th>
@@ -53,12 +54,20 @@ export default function ReadComponent() {
               </thead>
 
               <tbody>
-                {userData.length > 0 ? userData.map((user) => {
+                {userData.length > 0 ? userData.map((user, index) => {
                   let dob = user.dob
                   let newDob = dob.split('T')[0]
+
+                  let apiURL = `${rootApiUrl}${user.image}`
+                  let userImgUrl = apiURL.replace(/\\/g, '/')
+
+                  console.log(userImgUrl, 'userImgUrl');
+
                   return (
                     <tr key={user.email} className='dataTr'>
-                      <td className='tdFirst'><img src={`${apiUrlFromEnv}${user.image}`} alt='user image' className='imgBox' /> </td>
+                      <td className='tdFirst'>
+                        <img src={`${userImgUrl}`} alt='user image' className='imgBox' />
+                      </td>
                       <td className='tdSecond'>{user.name}</td>
                       <td>{user.email}</td>
                       <td>{user.phoneNumber}</td>
@@ -89,7 +98,7 @@ export default function ReadComponent() {
               let dob = user.dob
               let newDob = dob.split('T')[0]
 
-              let apiURL = `${apiUrlFromEnv}${user.image}`
+              let apiURL = `${rootApiUrl}${user.image}`
               let userImgUrl = apiURL.replace(/\\/g, '/')
 
               return (

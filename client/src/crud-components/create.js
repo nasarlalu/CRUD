@@ -78,6 +78,8 @@ const CreateComponent = () => {
         }
         setErrors({});
 
+        const apiUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_SIGNUP_API : process.env.REACT_APP_PROD_SIGNUP_API;
+
         try {
             const formData = new FormData();
             formData.append('name', name);
@@ -91,7 +93,7 @@ const CreateComponent = () => {
                 formData.append('image', image); // Only append if image is not null
             }
 
-            const response = await axios.post(process.env.REACT_APP_DEV_SIGNUP_API, formData, {
+            const response = await axios.post(apiUrl, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data' // Set the content type to multipart/form-data
                 }

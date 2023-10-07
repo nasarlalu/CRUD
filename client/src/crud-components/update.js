@@ -32,8 +32,10 @@ const UpdateComponent = () => {
 
     const fetchUserList = async () => {
 
+        const apiUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_API : process.env.REACT_APP_PROD_API;
+
         try {
-            const user = await axios.get(process.env.REACT_APP_DEV_API)
+            const user = await axios.get(apiUrl)
             setUsers(user.data)
             setIsUpdateModal(new Array(user.data.length).fill(false));
         }
@@ -64,7 +66,7 @@ const UpdateComponent = () => {
 
 
             // Send a PUT request to update the user data
-            const envApiLink = process.env.REACT_APP_DEV_API
+            const envApiLink = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_API : process.env.REACT_APP_PROD_API;
             const response = await axios.put(`${envApiLink}/${userId}`, formData);
 
             fetchUserList();
@@ -103,7 +105,8 @@ const UpdateComponent = () => {
         fetchUserList()
     }, [])
 
-    const apiUrlFromEnv = process.env.REACT_APP_ROOT_API
+    const rootApiUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_ROOT_API : process.env.REACT_APP_PROD_ROOT_API;
+    console.log(rootApiUrl, 'rootApiUrl');
 
 
     return (
@@ -136,10 +139,16 @@ const UpdateComponent = () => {
                                 {users.length > 0 ? users.map((user, index) => {
                                     let dob = user.dob
                                     let newDob = dob.split('T')[0]
+
+                                    let apiURL = `${rootApiUrl}${user.image}`
+                                    let userImgUrl = apiURL.replace(/\\/g, '/')
+
+                                    console.log(userImgUrl , 'update user image');
+
                                     return (
                                         <React.Fragment key={user.email} >
                                             <tr className='dataTr'>
-                                                <td className='tdFirst'><img src={`${apiUrlFromEnv}${user.image}`} alt='user image' className='imgBox' /> </td>
+                                                <td className='tdFirst'><img src={`${userImgUrl}`} alt='user image' className='imgBox' /> </td>
                                                 <td className='tdSecond'>{user.name}</td>
                                                 <td>{user.email}</td>
                                                 <td>{user.phoneNumber}</td>
@@ -273,7 +282,7 @@ const UpdateComponent = () => {
                             let dob = user.dob
                             let newDob = dob.split('T')[0]
 
-                            let apiURL = `${apiUrlFromEnv}${user.image}`
+                            let apiURL = `${rootApiUrl}${user.image}`
                             let userImgUrl = apiURL.replace(/\\/g, '/')
 
                             return (
