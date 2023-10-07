@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import validator from 'validator';
 import { Container, Row, Col, Button, Form, Modal } from 'react-bootstrap'
-import { VscCloudUpload } from 'react-icons/vsc'
-import { useDropzone } from 'react-dropzone';
 
 const CreateComponent = () => {
 
@@ -13,58 +11,12 @@ const CreateComponent = () => {
     const [dob, setDob] = useState('')
     const [age, setAge] = useState('')
     const [gender, setGender] = useState('')
-    const [image, setImage] = useState(null)
     const [errors, setErrors] = useState({});
     const [errorTxt, setErrorTxt] = useState('')
     const [modalShow, setModalShow] = useState(false);
-    const [prevImage, setPrevImage] = useState(null)
 
 
     const onHide = () => setModalShow(!modalShow);
-
-    const { getRootProps, getInputProps } = useDropzone({
-        onDrop: handleImageDrop,
-        // accept: 'image/*',
-        multiple: false,
-        accept: {
-            'image/png': ['.png'],
-            'image/jpeg': ['.jpg', '.jpeg']
-        },
-    });
-
-    function handleImageDrop(acceptedFiles) {
-        if (!acceptedFiles || acceptedFiles.length === 0) {
-            alert('Please select an image to upload.');
-            return;
-        }
-
-
-        let file = acceptedFiles[0]
-
-        if (file.size >= 1048576) {
-            alert('Image size should be under 1MB.')
-        }
-
-        else {
-            setImage(file);
-            const reader = new FileReader();
-            reader.onload = () => {
-                setPrevImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-
-    // img.onload = function () {
-    //     if (img.width > 1200 || img.height > 1200) {
-    //         alert('Image dimensions should be 500x500 or below.');
-    //     } else {
-    //     }
-    // };
-
-
-
 
 
     //adding inputted value to the state
@@ -89,10 +41,6 @@ const CreateComponent = () => {
             formData.append('phoneNumber', phoneNumber);
             formData.append('gender', gender);
 
-            if (image) {
-                formData.append('image', image); // Only append if image is not null
-            }
-
             const response = await axios.post(apiUrl, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data' // Set the content type to multipart/form-data
@@ -105,10 +53,8 @@ const CreateComponent = () => {
             setAge('')
             setDob('')
             setEmail('')
-            setImage('')
             setGender('')
             setPhoneNumber('')
-            setPrevImage('')
         } catch (err) {
             console.error(err, 'Error while signup in frontend');
             setModalShow(true)
@@ -160,11 +106,6 @@ const CreateComponent = () => {
         if (!validator.isMobilePhone(phoneNumber, 'en-IN',)) {
             newErrors.phoneNumber = 'Invalid phone number format or Undefined or non-indian Number';
         }
-
-        if (image == null || undefined) {
-            newErrors.image = 'Image is not selected';
-        }
-
         return newErrors;
     };
 
@@ -266,24 +207,6 @@ const CreateComponent = () => {
 
                                     </div>
 
-                                </div>
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col md={12} lg={12} sm={12}>
-                                <div className='userImgInputCntr text-center'>
-                                    <div className='uploadCntr'>
-
-                                        <div className={prevImage ? 'cursorUnset' : 'file-input'} {...getRootProps()}>
-                                            <input {...getInputProps()} />
-                                            <VscCloudUpload className={prevImage ? 'd-none cursorUnset' : ''} />
-                                            <p>{prevImage ? <span style={{ color: 'green' }}>upload success! </span> : 'Upload'}</p>
-                                            {errors.image && <span className="error imgErr">{errors.image}</span>}
-
-                                        </div>
-
-                                    </div>
                                 </div>
                             </Col>
                         </Row>

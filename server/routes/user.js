@@ -1,9 +1,6 @@
 const express = require('express')
 const router = express.Router();
 const User = require('../models/users')
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs')
 
 
 //Read all users
@@ -36,34 +33,15 @@ router.get('/:userId', (req, res) => {
 
 
 
-
-// Configure multer storage
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Specify the directory where the files will be saved
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
-const upload = multer({ storage: storage });
-
 // Update an existing user
-router.put('/:id', upload.single('image'), async (req, res) => {
+router.put('/:id', async (req, res) => {
+
     const { id } = req.params;
     const { name, email, age, dob, phoneNumber, gender } = req.body;
 
-    // const image = req.file ? req.file.path : null;
-
-    let image = null;
-    if (req.file) {
-        image = req.file.path;
-    }
-
-
     try {
         const updatedUser = await User.findByIdAndUpdate(id,
-            { name, email, age, dob, phoneNumber, gender, image },
+            { name, email, age, dob, phoneNumber, gender },
             { new: true }
         );
 
@@ -91,12 +69,6 @@ router.delete('/:id', async (req, res) => {
 
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
-        }
-
-        // Check if the user has an associated image
-        if (user.image) {
-            // Delete the image file from the server
-            fs.unlinkSync(user.image);
         }
 
         // Delete the user from the database

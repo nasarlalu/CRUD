@@ -26,10 +26,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['male', 'female', 'other'],
         required: true
-    },
-    image: {
-        type: String, // You can store the image URL or file path
-        required: false // Not all users might provide an image
     }
 });
 
